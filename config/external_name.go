@@ -9,8 +9,9 @@ import "github.com/upbound/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+	// to work with google network peering you need firewall crd
+	"google_compute_network_peering": config.TemplatedStringAsIdentifier("name", "{{ .setup.configuration.project }}/{{ .parameters.network }}/{{ .external_name }}"),
+	"google_compute_firewall":        config.TemplatedStringAsIdentifier("name", "projects/{{ .setup.configuration.project }}/global/firewalls/{{ .external_name }}"),
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
