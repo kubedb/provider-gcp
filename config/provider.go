@@ -36,6 +36,11 @@ func GetProvider() *ujconfig.Provider {
 			ExternalNameConfigurations(),
 		))
 
+	// API group overrides from Terraform import statements
+	for _, r := range pc.Resources {
+		groupKindOverride(r)
+	}
+
 	for _, configure := range []func(provider *ujconfig.Provider){
 		compute.Configure,
 		sql.Configure,
