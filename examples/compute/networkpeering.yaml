@@ -1,0 +1,33 @@
+apiVersion: compute.gcp.kubeform.com/v1alpha1
+kind: NetworkPeering
+metadata:
+  name: app-to-db
+spec:
+  forProvider:
+    network: "projects/kubeform-demo/global/networks/app-vpc"
+    peerNetwork: "projects/kubeform-demo/global/networks/db-vpc"
+
+---
+apiVersion: compute.gcp.kubeform.com/v1alpha1
+kind: NetworkPeering
+metadata:
+  name: db-to-app
+spec:
+  forProvider:
+    network: "projects/kubeform-demo/global/networks/db-vpc"
+    peerNetwork: "projects/kubeform-demo/global/networks/app-vpc"
+
+---
+apiVersion: compute.gcp.kubeform.com/v1alpha1
+kind: Firewall
+metadata:
+  name: example-firewall
+spec:
+  forProvider:
+    allow:
+      - ports:
+          - "27017"
+        protocol: tcp
+    network: "projects/kubeform-demo/global/networks/db-vpc"
+    sourceRanges:
+      - "0.0.0.0/0"

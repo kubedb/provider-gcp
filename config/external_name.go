@@ -12,6 +12,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	// to work with google network peering you need firewall crd
 	"google_compute_network_peering": config.TemplatedStringAsIdentifier("name", "{{ .setup.configuration.project }}/{{ .parameters.network }}/{{ .external_name }}"),
 	"google_compute_firewall":        config.TemplatedStringAsIdentifier("name", "projects/{{ .setup.configuration.project }}/global/firewalls/{{ .external_name }}"),
+	// Imported by using the following format: projects/{{project}}/global/networks/{{name}}
+	"google_compute_network": config.TemplatedStringAsIdentifier("name", "projects/{{ .setup.configuration.project }}/global/networks/{{ .external_name }}"),
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

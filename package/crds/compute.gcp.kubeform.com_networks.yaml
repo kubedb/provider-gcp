@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: networkpeerings.compute.gcp.upbound.io
+  name: networks.compute.gcp.kubeform.com
 spec:
-  group: compute.gcp.upbound.io
+  group: compute.gcp.kubeform.com
   names:
     categories:
     - crossplane
     - managed
     - gcp
-    kind: NetworkPeering
-    listKind: NetworkPeeringList
-    plural: networkpeerings
-    singular: networkpeering
+    kind: Network
+    listKind: NetworkList
+    plural: networks
+    singular: network
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NetworkPeering is the Schema for the NetworkPeerings API. Manages
-          a network peering within GCE.
+        description: Network is the Schema for the Networks API. Manages a VPC network
+          or legacy network resource on GCP.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkPeeringSpec defines the desired state of NetworkPeering
+            description: NetworkSpec defines the desired state of Network
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,48 +68,94 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  exportCustomRoutes:
-                    description: Whether to export the custom routes to the peer network.
-                      Defaults to false. Whether to export the custom routes to the
-                      peer network. Defaults to false.
+                  autoCreateSubnetworks:
+                    description: "When set to true, the network is created in \"auto
+                      subnet mode\" and it will create a subnet for each region automatically
+                      across the 10.128.0.0/9 address range. When set to false, the
+                      network is created in \"custom subnet mode\" so the user can
+                      explicitly connect subnetwork resources. When set to 'true',
+                      the network is created in \"auto subnet mode\" and it will create
+                      a subnet for each region automatically across the '10.128.0.0/9'
+                      address range. \n When set to 'false', the network is created
+                      in \"custom subnet mode\" so the user can explicitly connect
+                      subnetwork resources."
                     type: boolean
-                  exportSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are exported.
-                      The default value is true, all subnet routes are exported. The
-                      IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always exported to peers and are not controlled by this
+                  deleteDefaultRoutesOnCreate:
+                    description: If set to true, default routes (0.0.0.0/0) will be
+                      deleted immediately after network creation. Defaults to false.
+                      If set to 'true', default routes ('0.0.0.0/0') will be deleted
+                      immediately after network creation. Defaults to 'false'.
+                    type: boolean
+                  description:
+                    description: An optional description of this resource. The resource
+                      must be recreated to modify this field. An optional description
+                      of this resource. The resource must be recreated to modify this
                       field.
-                    type: boolean
-                  importCustomRoutes:
-                    description: Whether to import the custom routes from the peer
-                      network. Defaults to false. Whether to export the custom routes
-                      from the peer network. Defaults to false.
-                    type: boolean
-                  importSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are imported.
-                      The default value is false. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always imported from peers and are not controlled by this
-                      field.
-                    type: boolean
-                  network:
-                    description: The primary network of the peering. The primary network
-                      of the peering.
                     type: string
-                  peerNetwork:
-                    description: The peer network in the peering. The peer network
-                      may belong to a different project. The peer network in the peering.
-                      The peer network may belong to a different project.
+                  enableUlaInternalIpv6:
+                    description: Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20. Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20.
+                    type: boolean
+                  internalIpv6Range:
+                    description: When enabling ula internal ipv6, caller optionally
+                      can specify the /48 range they want from the google defined
+                      ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6
+                      address and must be within the fd20::/20. Operation will fail
+                      if the speficied /48 is already in used by another resource.
+                      If the field is not speficied, then a /48 range will be randomly
+                      allocated from fd20::/20 and returned via this field. When enabling
+                      ula internal ipv6, caller optionally can specify the /48 range
+                      they want from the google defined ULA prefix fd20::/20. The
+                      input must be a valid /48 ULA IPv6 address and must be within
+                      the fd20::/20. Operation will fail if the speficied /48 is already
+                      in used by another resource. If the field is not speficied,
+                      then a /48 range will be randomly allocated from fd20::/20 and
+                      returned via this field.
                     type: string
-                  stackType:
-                    description: 'Which IP version(s) of traffic and routes are allowed
-                      to be imported or exported between peer networks. The default
-                      value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
-                      Which IP version(s) of traffic and routes are allowed to be
-                      imported or exported between peer networks. The default value
-                      is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]'
+                  mtu:
+                    description: Maximum Transmission Unit in bytes. The default value
+                      is 1460 bytes. The minimum value for this field is 1300 and
+                      the maximum value is 8896 bytes (jumbo frames). Note that packets
+                      larger than 1500 bytes (standard Ethernet) can be subject to
+                      TCP-MSS clamping or dropped with an ICMP Fragmentation-Needed
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs. Maximum Transmission Unit in bytes. The default
+                      value is 1460 bytes. The minimum value for this field is 1300
+                      and the maximum value is 8896 bytes (jumbo frames). Note that
+                      packets larger than 1500 bytes (standard Ethernet) can be subject
+                      to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed'
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs.
+                    type: number
+                  networkFirewallPolicyEnforcementOrder:
+                    description: 'Set the order that Firewall Rules and Firewall Policies
+                      are evaluated. Default value is AFTER_CLASSIC_FIREWALL. Possible
+                      values are: BEFORE_CLASSIC_FIREWALL, AFTER_CLASSIC_FIREWALL.
+                      Set the order that Firewall Rules and Firewall Policies are
+                      evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
+                      values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"]'
                     type: string
-                required:
-                - network
+                  project:
+                    description: The ID of the project in which the resource belongs.
+                      If it is not provided, the provider project is used.
+                    type: string
+                  routingMode:
+                    description: 'The network-wide routing mode to use. If set to
+                      REGIONAL, this network''s cloud routers will only advertise
+                      routes with subnetworks of this network in the same region as
+                      the router. If set to GLOBAL, this network''s cloud routers
+                      will advertise routes with all subnetworks of this network,
+                      across regions. Possible values are: REGIONAL, GLOBAL. The network-wide
+                      routing mode to use. If set to ''REGIONAL'', this network''s
+                      cloud routers will only advertise routes with subnetworks of
+                      this network in the same region as the router. If set to ''GLOBAL'',
+                      this network''s cloud routers will advertise routes with all
+                      subnetworks of this network, across regions. Possible values:
+                      ["REGIONAL", "GLOBAL"]'
+                    type: string
                 type: object
               managementPolicy:
                 default: FullControl
@@ -297,67 +343,110 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: peerNetwork is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.peerNetwork)
           status:
-            description: NetworkPeeringStatus defines the observed state of NetworkPeering.
+            description: NetworkStatus defines the observed state of Network.
             properties:
               atProvider:
                 properties:
-                  exportCustomRoutes:
-                    description: Whether to export the custom routes to the peer network.
-                      Defaults to false. Whether to export the custom routes to the
-                      peer network. Defaults to false.
+                  autoCreateSubnetworks:
+                    description: "When set to true, the network is created in \"auto
+                      subnet mode\" and it will create a subnet for each region automatically
+                      across the 10.128.0.0/9 address range. When set to false, the
+                      network is created in \"custom subnet mode\" so the user can
+                      explicitly connect subnetwork resources. When set to 'true',
+                      the network is created in \"auto subnet mode\" and it will create
+                      a subnet for each region automatically across the '10.128.0.0/9'
+                      address range. \n When set to 'false', the network is created
+                      in \"custom subnet mode\" so the user can explicitly connect
+                      subnetwork resources."
                     type: boolean
-                  exportSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are exported.
-                      The default value is true, all subnet routes are exported. The
-                      IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always exported to peers and are not controlled by this
+                  deleteDefaultRoutesOnCreate:
+                    description: If set to true, default routes (0.0.0.0/0) will be
+                      deleted immediately after network creation. Defaults to false.
+                      If set to 'true', default routes ('0.0.0.0/0') will be deleted
+                      immediately after network creation. Defaults to 'false'.
+                    type: boolean
+                  description:
+                    description: An optional description of this resource. The resource
+                      must be recreated to modify this field. An optional description
+                      of this resource. The resource must be recreated to modify this
                       field.
+                    type: string
+                  enableUlaInternalIpv6:
+                    description: Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20. Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20.
                     type: boolean
+                  gatewayIpv4:
+                    description: The gateway address for default routing out of the
+                      network. This value is selected by GCP. The gateway address
+                      for default routing out of the network. This value is selected
+                      by GCP.
+                    type: string
                   id:
-                    description: an identifier for the resource with format {{network}}/{{name}}
+                    description: an identifier for the resource with format projects/{{project}}/global/networks/{{name}}
                     type: string
-                  importCustomRoutes:
-                    description: Whether to import the custom routes from the peer
-                      network. Defaults to false. Whether to export the custom routes
-                      from the peer network. Defaults to false.
-                    type: boolean
-                  importSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are imported.
-                      The default value is false. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always imported from peers and are not controlled by this
-                      field.
-                    type: boolean
-                  network:
-                    description: The primary network of the peering. The primary network
-                      of the peering.
+                  internalIpv6Range:
+                    description: When enabling ula internal ipv6, caller optionally
+                      can specify the /48 range they want from the google defined
+                      ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6
+                      address and must be within the fd20::/20. Operation will fail
+                      if the speficied /48 is already in used by another resource.
+                      If the field is not speficied, then a /48 range will be randomly
+                      allocated from fd20::/20 and returned via this field. When enabling
+                      ula internal ipv6, caller optionally can specify the /48 range
+                      they want from the google defined ULA prefix fd20::/20. The
+                      input must be a valid /48 ULA IPv6 address and must be within
+                      the fd20::/20. Operation will fail if the speficied /48 is already
+                      in used by another resource. If the field is not speficied,
+                      then a /48 range will be randomly allocated from fd20::/20 and
+                      returned via this field.
                     type: string
-                  peerNetwork:
-                    description: The peer network in the peering. The peer network
-                      may belong to a different project. The peer network in the peering.
-                      The peer network may belong to a different project.
+                  mtu:
+                    description: Maximum Transmission Unit in bytes. The default value
+                      is 1460 bytes. The minimum value for this field is 1300 and
+                      the maximum value is 8896 bytes (jumbo frames). Note that packets
+                      larger than 1500 bytes (standard Ethernet) can be subject to
+                      TCP-MSS clamping or dropped with an ICMP Fragmentation-Needed
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs. Maximum Transmission Unit in bytes. The default
+                      value is 1460 bytes. The minimum value for this field is 1300
+                      and the maximum value is 8896 bytes (jumbo frames). Note that
+                      packets larger than 1500 bytes (standard Ethernet) can be subject
+                      to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed'
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs.
+                    type: number
+                  networkFirewallPolicyEnforcementOrder:
+                    description: 'Set the order that Firewall Rules and Firewall Policies
+                      are evaluated. Default value is AFTER_CLASSIC_FIREWALL. Possible
+                      values are: BEFORE_CLASSIC_FIREWALL, AFTER_CLASSIC_FIREWALL.
+                      Set the order that Firewall Rules and Firewall Policies are
+                      evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
+                      values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"]'
                     type: string
-                  stackType:
-                    description: 'Which IP version(s) of traffic and routes are allowed
-                      to be imported or exported between peer networks. The default
-                      value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
-                      Which IP version(s) of traffic and routes are allowed to be
-                      imported or exported between peer networks. The default value
-                      is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]'
+                  project:
+                    description: The ID of the project in which the resource belongs.
+                      If it is not provided, the provider project is used.
                     type: string
-                  state:
-                    description: State for the peering, either ACTIVE or INACTIVE.
-                      The peering is ACTIVE when there's a matching configuration
-                      in the peer network. State for the peering, either ACTIVE or
-                      INACTIVE. The peering is ACTIVE when there's a matching configuration
-                      in the peer network.
+                  routingMode:
+                    description: 'The network-wide routing mode to use. If set to
+                      REGIONAL, this network''s cloud routers will only advertise
+                      routes with subnetworks of this network in the same region as
+                      the router. If set to GLOBAL, this network''s cloud routers
+                      will advertise routes with all subnetworks of this network,
+                      across regions. Possible values are: REGIONAL, GLOBAL. The network-wide
+                      routing mode to use. If set to ''REGIONAL'', this network''s
+                      cloud routers will only advertise routes with subnetworks of
+                      this network in the same region as the router. If set to ''GLOBAL'',
+                      this network''s cloud routers will advertise routes with all
+                      subnetworks of this network, across regions. Possible values:
+                      ["REGIONAL", "GLOBAL"]'
                     type: string
-                  stateDetails:
-                    description: Details about the current state of the peering. Details
-                      about the current state of the peering.
+                  selfLink:
+                    description: The URI of the created resource.
                     type: string
                 type: object
               conditions:

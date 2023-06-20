@@ -10,6 +10,7 @@ import (
 	"github.com/upbound/upjet/pkg/controller"
 
 	firewall "kubeform.dev/provider-gcp/internal/controller/compute/firewall"
+	network "kubeform.dev/provider-gcp/internal/controller/compute/network"
 	networkpeering "kubeform.dev/provider-gcp/internal/controller/compute/networkpeering"
 	providerconfig "kubeform.dev/provider-gcp/internal/controller/providerconfig"
 )
@@ -19,6 +20,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		firewall.Setup,
+		network.Setup,
 		networkpeering.Setup,
 		providerconfig.Setup,
 	} {

@@ -5,9 +5,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: firewalls.compute.gcp.upbound.io
+  name: firewalls.compute.gcp.kubeform.com
 spec:
-  group: compute.gcp.upbound.io
+  group: compute.gcp.kubeform.com
   names:
     categories:
     - crossplane

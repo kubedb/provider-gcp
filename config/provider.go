@@ -28,6 +28,7 @@ func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
+		ujconfig.WithRootGroup("gcp.kubeform.com"),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
 		))

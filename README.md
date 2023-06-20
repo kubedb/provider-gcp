@@ -8,7 +8,7 @@ GCP API.
 ## Getting Started
 
 Install the provider by using the following command after changing the image tag
-to the [latest release](https://marketplace.upbound.io/providers/kubeform/provider-gcp):
+to the [latest release](https://github.com/kubeform/provider-gcp):
 ```
 up ctp provider install kubeform/provider-gcp:v0.1.0
 ```
