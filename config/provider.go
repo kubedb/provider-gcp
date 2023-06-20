@@ -8,6 +8,9 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 	"kubeform.dev/provider-gcp/config/compute"
+	"kubeform.dev/provider-gcp/config/redis"
+	"kubeform.dev/provider-gcp/config/spanner"
+	"kubeform.dev/provider-gcp/config/sql"
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 )
@@ -35,6 +38,9 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		compute.Configure,
+		sql.Configure,
+		spanner.Configure,
+		redis.Configure,
 	} {
 		configure(pc)
 	}
