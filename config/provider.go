@@ -7,15 +7,17 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+	"kubeform.dev/provider-gcp/config/compute"
+	"kubeform.dev/provider-gcp/config/redis"
+	"kubeform.dev/provider-gcp/config/spanner"
+	"kubeform.dev/provider-gcp/config/sql"
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
-
-	"github.com/upbound/upjet-provider-template/config/null"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "gcp"
+	modulePath     = "kubeform.dev/provider-gcp"
 )
 
 //go:embed schema.json
@@ -29,13 +31,21 @@ func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
+		ujconfig.WithRootGroup("gcp.kubeform.com"),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
 		))
 
+	// API group overrides from Terraform import statements
+	for _, r := range pc.Resources {
+		groupKindOverride(r)
+	}
+
 	for _, configure := range []func(provider *ujconfig.Provider){
-		// add custom config functions
-		null.Configure,
+		compute.Configure,
+		sql.Configure,
+		spanner.Configure,
+		redis.Configure,
 	} {
 		configure(pc)
 	}

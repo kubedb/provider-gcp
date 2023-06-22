@@ -1,4 +1,4 @@
-module github.com/upbound/upjet-provider-template
+module kubeform.dev/provider-gcp
 
 go 1.19
 

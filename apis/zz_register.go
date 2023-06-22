@@ -10,15 +10,21 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/upbound/upjet-provider-template/apis/null/v1alpha1"
-	v1alpha1apis "github.com/upbound/upjet-provider-template/apis/v1alpha1"
-	v1beta1 "github.com/upbound/upjet-provider-template/apis/v1beta1"
+	v1alpha1 "kubeform.dev/provider-gcp/apis/compute/v1alpha1"
+	v1alpha1redis "kubeform.dev/provider-gcp/apis/redis/v1alpha1"
+	v1alpha1spanner "kubeform.dev/provider-gcp/apis/spanner/v1alpha1"
+	v1alpha1sql "kubeform.dev/provider-gcp/apis/sql/v1alpha1"
+	v1alpha1apis "kubeform.dev/provider-gcp/apis/v1alpha1"
+	v1beta1 "kubeform.dev/provider-gcp/apis/v1beta1"
 )
 
 func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
+		v1alpha1redis.SchemeBuilder.AddToScheme,
+		v1alpha1spanner.SchemeBuilder.AddToScheme,
+		v1alpha1sql.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)
