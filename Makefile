@@ -61,7 +61,8 @@ UPTEST_VERSION = v0.2.1
 
 REGISTRY_ORGS ?= xpkg.upbound.io/upbound
 IMAGES = $(PROJECT_NAME)
--include build/makelib/imagelight.mk
+DOCKER_REGISTRY=ghcr.io/kubeform
+-include build/makelib/image.mk
 
 # ====================================================================================
 # Setup XPKG
@@ -71,7 +72,7 @@ XPKG_REG_ORGS ?= xpkg.upbound.io/upbound
 # inferred.
 XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/upbound
 XPKGS = $(PROJECT_NAME)
--include build/makelib/xpkg.mk
+# -include build/makelib/xpkg.mk
 
 # ====================================================================================
 # Fallthrough
