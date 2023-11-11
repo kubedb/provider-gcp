@@ -13,7 +13,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "gcp.kubeform.com"
+	Group   = "gcp.kubedb.com"
 	Version = "v1alpha1"
 )
 

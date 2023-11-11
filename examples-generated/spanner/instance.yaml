@@ -1,4 +1,4 @@
-apiVersion: spanner.gcp.kubeform.com/v1alpha1
+apiVersion: spanner.gcp.kubedb.com/v1alpha1
 kind: Instance
 metadata:
   annotations:

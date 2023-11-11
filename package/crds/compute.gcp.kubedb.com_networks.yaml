@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: instances.spanner.gcp.kubeform.com
+  name: networks.compute.gcp.kubedb.com
 spec:
-  group: spanner.gcp.kubeform.com
+  group: compute.gcp.kubedb.com
   names:
     categories:
     - crossplane
     - managed
     - gcp
-    kind: Instance
-    listKind: InstanceList
-    plural: instances
-    singular: instance
+    kind: Network
+    listKind: NetworkList
+    plural: networks
+    singular: network
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Instance is the Schema for the Instances API. An isolated set
-          of Cloud Spanner resources on which databases can be hosted.
+        description: Network is the Schema for the Networks API. Manages a VPC network
+          or legacy network resource on GCP.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: InstanceSpec defines the desired state of Instance
+            description: NetworkSpec defines the desired state of Network
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,55 +68,93 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  config:
-                    description: The name of the instance's configuration (similar
-                      but not quite the same as a region) which defines the geographic
-                      placement and replication of your databases in this instance.
-                      It determines where your data is stored. Values are typically
-                      of the form regional-europe-west1 , us-central etc. In order
-                      to obtain a valid list please consult the Configuration section
-                      of the docs. The name of the instance's configuration (similar
-                      but not quite the same as a region) which defines the geographic
-                      placement and replication of your databases in this instance.
-                      It determines where your data is stored. Values are typically
-                      of the form 'regional-europe-west1' , 'us-central' etc. In order
-                      to obtain a valid list please consult the [Configuration section
-                      of the docs](https://cloud.google.com/spanner/docs/instances).
-                    type: string
-                  displayName:
-                    description: The descriptive name for this instance as it appears
-                      in UIs. Must be unique per project and between 4 and 30 characters
-                      in length. The descriptive name for this instance as it appears
-                      in UIs. Must be unique per project and between 4 and 30 characters
-                      in length.
-                    type: string
-                  forceDestroy:
-                    description: When deleting a spanner instance, this boolean option
-                      will delete all backups of this instance. This must be set to
-                      true if you created a backup manually in the console. When deleting
-                      a spanner instance, this boolean option will delete all backups
-                      of this instance. This must be set to true if you created a
-                      backup manually in the console.
+                  autoCreateSubnetworks:
+                    description: "When set to true, the network is created in \"auto
+                      subnet mode\" and it will create a subnet for each region automatically
+                      across the 10.128.0.0/9 address range. When set to false, the
+                      network is created in \"custom subnet mode\" so the user can
+                      explicitly connect subnetwork resources. When set to 'true',
+                      the network is created in \"auto subnet mode\" and it will create
+                      a subnet for each region automatically across the '10.128.0.0/9'
+                      address range. \n When set to 'false', the network is created
+                      in \"custom subnet mode\" so the user can explicitly connect
+                      subnetwork resources."
                     type: boolean
-                  labels:
-                    additionalProperties:
-                      type: string
-                    description: 'An object containing a list of "key": value pairs.
-                      Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
-                      An object containing a list of "key": value pairs. Example:
-                      { "name": "wrench", "mass": "1.3kg", "count": "3" }.'
-                    type: object
-                  numNodes:
-                    description: The number of nodes allocated to this instance. The
-                      number of nodes allocated to this instance.
+                  deleteDefaultRoutesOnCreate:
+                    description: If set to true, default routes (0.0.0.0/0) will be
+                      deleted immediately after network creation. Defaults to false.
+                      If set to 'true', default routes ('0.0.0.0/0') will be deleted
+                      immediately after network creation. Defaults to 'false'.
+                    type: boolean
+                  description:
+                    description: An optional description of this resource. The resource
+                      must be recreated to modify this field. An optional description
+                      of this resource. The resource must be recreated to modify this
+                      field.
+                    type: string
+                  enableUlaInternalIpv6:
+                    description: Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20. Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20.
+                    type: boolean
+                  internalIpv6Range:
+                    description: When enabling ula internal ipv6, caller optionally
+                      can specify the /48 range they want from the google defined
+                      ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6
+                      address and must be within the fd20::/20. Operation will fail
+                      if the speficied /48 is already in used by another resource.
+                      If the field is not speficied, then a /48 range will be randomly
+                      allocated from fd20::/20 and returned via this field. When enabling
+                      ula internal ipv6, caller optionally can specify the /48 range
+                      they want from the google defined ULA prefix fd20::/20. The
+                      input must be a valid /48 ULA IPv6 address and must be within
+                      the fd20::/20. Operation will fail if the speficied /48 is already
+                      in used by another resource. If the field is not speficied,
+                      then a /48 range will be randomly allocated from fd20::/20 and
+                      returned via this field.
+                    type: string
+                  mtu:
+                    description: Maximum Transmission Unit in bytes. The default value
+                      is 1460 bytes. The minimum value for this field is 1300 and
+                      the maximum value is 8896 bytes (jumbo frames). Note that packets
+                      larger than 1500 bytes (standard Ethernet) can be subject to
+                      TCP-MSS clamping or dropped with an ICMP Fragmentation-Needed
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs. Maximum Transmission Unit in bytes. The default
+                      value is 1460 bytes. The minimum value for this field is 1300
+                      and the maximum value is 8896 bytes (jumbo frames). Note that
+                      packets larger than 1500 bytes (standard Ethernet) can be subject
+                      to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed'
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs.
                     type: number
-                  processingUnits:
-                    description: The number of processing units allocated to this
-                      instance. The number of processing units allocated to this instance.
-                    type: number
+                  networkFirewallPolicyEnforcementOrder:
+                    description: 'Set the order that Firewall Rules and Firewall Policies
+                      are evaluated. Default value is AFTER_CLASSIC_FIREWALL. Possible
+                      values are: BEFORE_CLASSIC_FIREWALL, AFTER_CLASSIC_FIREWALL.
+                      Set the order that Firewall Rules and Firewall Policies are
+                      evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
+                      values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"]'
+                    type: string
                   project:
                     description: The ID of the project in which the resource belongs.
                       If it is not provided, the provider project is used.
+                    type: string
+                  routingMode:
+                    description: 'The network-wide routing mode to use. If set to
+                      REGIONAL, this network''s cloud routers will only advertise
+                      routes with subnetworks of this network in the same region as
+                      the router. If set to GLOBAL, this network''s cloud routers
+                      will advertise routes with all subnetworks of this network,
+                      across regions. Possible values are: REGIONAL, GLOBAL. The network-wide
+                      routing mode to use. If set to ''REGIONAL'', this network''s
+                      cloud routers will only advertise routes with subnetworks of
+                      this network in the same region as the router. If set to ''GLOBAL'',
+                      this network''s cloud routers will advertise routes with all
+                      subnetworks of this network, across regions. Possible values:
+                      ["REGIONAL", "GLOBAL"]'
                     type: string
                 type: object
               managementPolicy:
@@ -305,72 +343,110 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: config is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.config)
-            - message: displayName is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.displayName)
           status:
-            description: InstanceStatus defines the observed state of Instance.
+            description: NetworkStatus defines the observed state of Network.
             properties:
               atProvider:
                 properties:
-                  config:
-                    description: The name of the instance's configuration (similar
-                      but not quite the same as a region) which defines the geographic
-                      placement and replication of your databases in this instance.
-                      It determines where your data is stored. Values are typically
-                      of the form regional-europe-west1 , us-central etc. In order
-                      to obtain a valid list please consult the Configuration section
-                      of the docs. The name of the instance's configuration (similar
-                      but not quite the same as a region) which defines the geographic
-                      placement and replication of your databases in this instance.
-                      It determines where your data is stored. Values are typically
-                      of the form 'regional-europe-west1' , 'us-central' etc. In order
-                      to obtain a valid list please consult the [Configuration section
-                      of the docs](https://cloud.google.com/spanner/docs/instances).
-                    type: string
-                  displayName:
-                    description: The descriptive name for this instance as it appears
-                      in UIs. Must be unique per project and between 4 and 30 characters
-                      in length. The descriptive name for this instance as it appears
-                      in UIs. Must be unique per project and between 4 and 30 characters
-                      in length.
-                    type: string
-                  forceDestroy:
-                    description: When deleting a spanner instance, this boolean option
-                      will delete all backups of this instance. This must be set to
-                      true if you created a backup manually in the console. When deleting
-                      a spanner instance, this boolean option will delete all backups
-                      of this instance. This must be set to true if you created a
-                      backup manually in the console.
+                  autoCreateSubnetworks:
+                    description: "When set to true, the network is created in \"auto
+                      subnet mode\" and it will create a subnet for each region automatically
+                      across the 10.128.0.0/9 address range. When set to false, the
+                      network is created in \"custom subnet mode\" so the user can
+                      explicitly connect subnetwork resources. When set to 'true',
+                      the network is created in \"auto subnet mode\" and it will create
+                      a subnet for each region automatically across the '10.128.0.0/9'
+                      address range. \n When set to 'false', the network is created
+                      in \"custom subnet mode\" so the user can explicitly connect
+                      subnetwork resources."
                     type: boolean
-                  id:
-                    description: an identifier for the resource with format {{project}}/{{name}}
+                  deleteDefaultRoutesOnCreate:
+                    description: If set to true, default routes (0.0.0.0/0) will be
+                      deleted immediately after network creation. Defaults to false.
+                      If set to 'true', default routes ('0.0.0.0/0') will be deleted
+                      immediately after network creation. Defaults to 'false'.
+                    type: boolean
+                  description:
+                    description: An optional description of this resource. The resource
+                      must be recreated to modify this field. An optional description
+                      of this resource. The resource must be recreated to modify this
+                      field.
                     type: string
-                  labels:
-                    additionalProperties:
-                      type: string
-                    description: 'An object containing a list of "key": value pairs.
-                      Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
-                      An object containing a list of "key": value pairs. Example:
-                      { "name": "wrench", "mass": "1.3kg", "count": "3" }.'
-                    type: object
-                  numNodes:
-                    description: The number of nodes allocated to this instance. The
-                      number of nodes allocated to this instance.
+                  enableUlaInternalIpv6:
+                    description: Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20. Enable ULA internal ipv6 on this network. Enabling
+                      this feature will assign a /48 from google defined ULA prefix
+                      fd20::/20.
+                    type: boolean
+                  gatewayIpv4:
+                    description: The gateway address for default routing out of the
+                      network. This value is selected by GCP. The gateway address
+                      for default routing out of the network. This value is selected
+                      by GCP.
+                    type: string
+                  id:
+                    description: an identifier for the resource with format projects/{{project}}/global/networks/{{name}}
+                    type: string
+                  internalIpv6Range:
+                    description: When enabling ula internal ipv6, caller optionally
+                      can specify the /48 range they want from the google defined
+                      ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6
+                      address and must be within the fd20::/20. Operation will fail
+                      if the speficied /48 is already in used by another resource.
+                      If the field is not speficied, then a /48 range will be randomly
+                      allocated from fd20::/20 and returned via this field. When enabling
+                      ula internal ipv6, caller optionally can specify the /48 range
+                      they want from the google defined ULA prefix fd20::/20. The
+                      input must be a valid /48 ULA IPv6 address and must be within
+                      the fd20::/20. Operation will fail if the speficied /48 is already
+                      in used by another resource. If the field is not speficied,
+                      then a /48 range will be randomly allocated from fd20::/20 and
+                      returned via this field.
+                    type: string
+                  mtu:
+                    description: Maximum Transmission Unit in bytes. The default value
+                      is 1460 bytes. The minimum value for this field is 1300 and
+                      the maximum value is 8896 bytes (jumbo frames). Note that packets
+                      larger than 1500 bytes (standard Ethernet) can be subject to
+                      TCP-MSS clamping or dropped with an ICMP Fragmentation-Needed
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs. Maximum Transmission Unit in bytes. The default
+                      value is 1460 bytes. The minimum value for this field is 1300
+                      and the maximum value is 8896 bytes (jumbo frames). Note that
+                      packets larger than 1500 bytes (standard Ethernet) can be subject
+                      to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed'
+                      message if the packets are routed to the Internet or other VPCs
+                      with varying MTUs.
                     type: number
-                  processingUnits:
-                    description: The number of processing units allocated to this
-                      instance. The number of processing units allocated to this instance.
-                    type: number
+                  networkFirewallPolicyEnforcementOrder:
+                    description: 'Set the order that Firewall Rules and Firewall Policies
+                      are evaluated. Default value is AFTER_CLASSIC_FIREWALL. Possible
+                      values are: BEFORE_CLASSIC_FIREWALL, AFTER_CLASSIC_FIREWALL.
+                      Set the order that Firewall Rules and Firewall Policies are
+                      evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
+                      values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"]'
+                    type: string
                   project:
                     description: The ID of the project in which the resource belongs.
                       If it is not provided, the provider project is used.
                     type: string
-                  state:
-                    description: 'Instance status: CREATING or READY. Instance status:
-                      ''CREATING'' or ''READY''.'
+                  routingMode:
+                    description: 'The network-wide routing mode to use. If set to
+                      REGIONAL, this network''s cloud routers will only advertise
+                      routes with subnetworks of this network in the same region as
+                      the router. If set to GLOBAL, this network''s cloud routers
+                      will advertise routes with all subnetworks of this network,
+                      across regions. Possible values are: REGIONAL, GLOBAL. The network-wide
+                      routing mode to use. If set to ''REGIONAL'', this network''s
+                      cloud routers will only advertise routes with subnetworks of
+                      this network in the same region as the router. If set to ''GLOBAL'',
+                      this network''s cloud routers will advertise routes with all
+                      subnetworks of this network, across regions. Possible values:
+                      ["REGIONAL", "GLOBAL"]'
+                    type: string
+                  selfLink:
+                    description: The URI of the created resource.
                     type: string
                 type: object
               conditions:

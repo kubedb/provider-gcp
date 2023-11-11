@@ -5,9 +5,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: databaseinstances.sql.gcp.kubeform.com
+  name: databaseinstances.sql.gcp.kubedb.com
 spec:
-  group: sql.gcp.kubeform.com
+  group: sql.gcp.kubedb.com
   names:
     categories:
     - crossplane

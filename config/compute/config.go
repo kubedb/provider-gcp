@@ -2,7 +2,7 @@ package compute
 
 import (
 	"github.com/upbound/upjet/pkg/config"
-	"kubeform.dev/provider-gcp/config/common"
+	"kubedb.dev/provider-gcp/config/common"
 )
 
 // Configure configures individual resources by adding custom

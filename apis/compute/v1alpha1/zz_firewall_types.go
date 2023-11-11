@@ -391,7 +391,7 @@ type FirewallParameters struct {
 	// The name or self_link of the network to attach this firewall to.
 	// The name or self_link of the network to attach this firewall to.
 	// +crossplane:generate:reference:type=Network
-	// +crossplane:generate:reference:extractor=kubeform.dev/provider-gcp/config/common.SelfLinkExtractor()
+	// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.SelfLinkExtractor()
 	// +kubebuilder:validation:Optional
 	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 

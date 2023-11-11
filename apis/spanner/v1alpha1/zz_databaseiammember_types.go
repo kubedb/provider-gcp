@@ -57,7 +57,7 @@ type DatabaseIAMMemberParameters struct {
 	Condition []ConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// +crossplane:generate:reference:type=Database
-	// +crossplane:generate:reference:extractor=kubeform.dev/provider-gcp/config/common.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	Database *string `json:"database,omitempty" tf:"database,omitempty"`
 
@@ -70,7 +70,7 @@ type DatabaseIAMMemberParameters struct {
 	DatabaseSelector *v1.Selector `json:"databaseSelector,omitempty" tf:"-"`
 
 	// +crossplane:generate:reference:type=Instance
-	// +crossplane:generate:reference:extractor=kubeform.dev/provider-gcp/config/common.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 

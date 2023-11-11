@@ -55,7 +55,7 @@ type InstanceIAMMemberParameters struct {
 	Condition []InstanceIAMMemberConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// +crossplane:generate:reference:type=Instance
-	// +crossplane:generate:reference:extractor=kubeform.dev/provider-gcp/config/common.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 

@@ -1,4 +1,4 @@
-module kubeform.dev/provider-gcp
+module kubedb.dev/provider-gcp
 
 go 1.19
 

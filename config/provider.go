@@ -7,17 +7,17 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
-	"kubeform.dev/provider-gcp/config/compute"
-	"kubeform.dev/provider-gcp/config/redis"
-	"kubeform.dev/provider-gcp/config/spanner"
-	"kubeform.dev/provider-gcp/config/sql"
+	"kubedb.dev/provider-gcp/config/compute"
+	"kubedb.dev/provider-gcp/config/redis"
+	"kubedb.dev/provider-gcp/config/spanner"
+	"kubedb.dev/provider-gcp/config/sql"
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 )
 
 const (
 	resourcePrefix = "gcp"
-	modulePath     = "kubeform.dev/provider-gcp"
+	modulePath     = "kubedb.dev/provider-gcp"
 )
 
 //go:embed schema.json
@@ -31,7 +31,7 @@ func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
-		ujconfig.WithRootGroup("gcp.kubeform.com"),
+		ujconfig.WithRootGroup("gcp.kubedb.com"),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
 		))

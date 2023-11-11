@@ -13,7 +13,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/upbound/upjet/pkg/controller"
 
-	"kubeform.dev/provider-gcp/apis/v1beta1"
+	"kubedb.dev/provider-gcp/apis/v1beta1"
 )
 
 // Setup adds a controller that reconciles ProviderConfigs by accounting for

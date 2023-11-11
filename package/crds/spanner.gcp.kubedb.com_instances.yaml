@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: sslcerts.sql.gcp.kubeform.com
+  name: instances.spanner.gcp.kubedb.com
 spec:
-  group: sql.gcp.kubeform.com
+  group: spanner.gcp.kubedb.com
   names:
     categories:
     - crossplane
     - managed
     - gcp
-    kind: SSLCert
-    listKind: SSLCertList
-    plural: sslcerts
-    singular: sslcert
+    kind: Instance
+    listKind: InstanceList
+    plural: instances
+    singular: instance
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SSLCert is the Schema for the SSLCerts API. Creates a new SQL
-          Ssl Cert in Google Cloud SQL.
+        description: Instance is the Schema for the Instances API. An isolated set
+          of Cloud Spanner resources on which databases can be hosted.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: SSLCertSpec defines the desired state of SSLCert
+            description: InstanceSpec defines the desired state of Instance
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,97 +68,55 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  commonName:
-                    description: The common name to be used in the certificate to
-                      identify the client. Constrained to [a-zA-Z.-_ ]+. Changing
-                      this forces a new resource to be created. The common name to
-                      be used in the certificate to identify the client. Constrained
-                      to [a-zA-Z.-_ ]+. Changing this forces a new resource to be
-                      created.
+                  config:
+                    description: The name of the instance's configuration (similar
+                      but not quite the same as a region) which defines the geographic
+                      placement and replication of your databases in this instance.
+                      It determines where your data is stored. Values are typically
+                      of the form regional-europe-west1 , us-central etc. In order
+                      to obtain a valid list please consult the Configuration section
+                      of the docs. The name of the instance's configuration (similar
+                      but not quite the same as a region) which defines the geographic
+                      placement and replication of your databases in this instance.
+                      It determines where your data is stored. Values are typically
+                      of the form 'regional-europe-west1' , 'us-central' etc. In order
+                      to obtain a valid list please consult the [Configuration section
+                      of the docs](https://cloud.google.com/spanner/docs/instances).
                     type: string
-                  instance:
-                    description: The name of the Cloud SQL instance. Changing this
-                      forces a new resource to be created. The name of the Cloud SQL
-                      instance. Changing this forces a new resource to be created.
+                  displayName:
+                    description: The descriptive name for this instance as it appears
+                      in UIs. Must be unique per project and between 4 and 30 characters
+                      in length. The descriptive name for this instance as it appears
+                      in UIs. Must be unique per project and between 4 and 30 characters
+                      in length.
                     type: string
-                  instanceRef:
-                    description: Reference to a DatabaseInstance to populate instance.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
+                  forceDestroy:
+                    description: When deleting a spanner instance, this boolean option
+                      will delete all backups of this instance. This must be set to
+                      true if you created a backup manually in the console. When deleting
+                      a spanner instance, this boolean option will delete all backups
+                      of this instance. This must be set to true if you created a
+                      backup manually in the console.
+                    type: boolean
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: 'An object containing a list of "key": value pairs.
+                      Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
+                      An object containing a list of "key": value pairs. Example:
+                      { "name": "wrench", "mass": "1.3kg", "count": "3" }.'
                     type: object
-                  instanceSelector:
-                    description: Selector for a DatabaseInstance to populate instance.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
+                  numNodes:
+                    description: The number of nodes allocated to this instance. The
+                      number of nodes allocated to this instance.
+                    type: number
+                  processingUnits:
+                    description: The number of processing units allocated to this
+                      instance. The number of processing units allocated to this instance.
+                    type: number
                   project:
                     description: The ID of the project in which the resource belongs.
-                      If it is not provided, the provider project is used. The ID
-                      of the project in which the resource belongs. If it is not provided,
-                      the provider project is used.
+                      If it is not provided, the provider project is used.
                     type: string
                 type: object
               managementPolicy:
@@ -348,61 +306,71 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: commonName is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.commonName)
+            - message: config is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.config)
+            - message: displayName is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.displayName)
           status:
-            description: SSLCertStatus defines the observed state of SSLCert.
+            description: InstanceStatus defines the observed state of Instance.
             properties:
               atProvider:
                 properties:
-                  cert:
-                    description: The actual certificate data for this client certificate.
-                      The actual certificate data for this client certificate.
+                  config:
+                    description: The name of the instance's configuration (similar
+                      but not quite the same as a region) which defines the geographic
+                      placement and replication of your databases in this instance.
+                      It determines where your data is stored. Values are typically
+                      of the form regional-europe-west1 , us-central etc. In order
+                      to obtain a valid list please consult the Configuration section
+                      of the docs. The name of the instance's configuration (similar
+                      but not quite the same as a region) which defines the geographic
+                      placement and replication of your databases in this instance.
+                      It determines where your data is stored. Values are typically
+                      of the form 'regional-europe-west1' , 'us-central' etc. In order
+                      to obtain a valid list please consult the [Configuration section
+                      of the docs](https://cloud.google.com/spanner/docs/instances).
                     type: string
-                  certSerialNumber:
-                    description: The serial number extracted from the certificate
-                      data. The serial number extracted from the certificate data.
+                  displayName:
+                    description: The descriptive name for this instance as it appears
+                      in UIs. Must be unique per project and between 4 and 30 characters
+                      in length. The descriptive name for this instance as it appears
+                      in UIs. Must be unique per project and between 4 and 30 characters
+                      in length.
                     type: string
-                  commonName:
-                    description: The common name to be used in the certificate to
-                      identify the client. Constrained to [a-zA-Z.-_ ]+. Changing
-                      this forces a new resource to be created. The common name to
-                      be used in the certificate to identify the client. Constrained
-                      to [a-zA-Z.-_ ]+. Changing this forces a new resource to be
-                      created.
-                    type: string
-                  createTime:
-                    description: The time when the certificate was created in RFC
-                      3339 format, for example 2012-11-15T16:19:00.094Z. The time
-                      when the certificate was created in RFC 3339 format, for example
-                      2012-11-15T16:19:00.094Z.
-                    type: string
-                  expirationTime:
-                    description: The time when the certificate expires in RFC 3339
-                      format, for example 2012-11-15T16:19:00.094Z. The time when
-                      the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z.
-                    type: string
+                  forceDestroy:
+                    description: When deleting a spanner instance, this boolean option
+                      will delete all backups of this instance. This must be set to
+                      true if you created a backup manually in the console. When deleting
+                      a spanner instance, this boolean option will delete all backups
+                      of this instance. This must be set to true if you created a
+                      backup manually in the console.
+                    type: boolean
                   id:
+                    description: an identifier for the resource with format {{project}}/{{name}}
                     type: string
-                  instance:
-                    description: The name of the Cloud SQL instance. Changing this
-                      forces a new resource to be created. The name of the Cloud SQL
-                      instance. Changing this forces a new resource to be created.
-                    type: string
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: 'An object containing a list of "key": value pairs.
+                      Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
+                      An object containing a list of "key": value pairs. Example:
+                      { "name": "wrench", "mass": "1.3kg", "count": "3" }.'
+                    type: object
+                  numNodes:
+                    description: The number of nodes allocated to this instance. The
+                      number of nodes allocated to this instance.
+                    type: number
+                  processingUnits:
+                    description: The number of processing units allocated to this
+                      instance. The number of processing units allocated to this instance.
+                    type: number
                   project:
                     description: The ID of the project in which the resource belongs.
-                      If it is not provided, the provider project is used. The ID
-                      of the project in which the resource belongs. If it is not provided,
-                      the provider project is used.
+                      If it is not provided, the provider project is used.
                     type: string
-                  serverCaCert:
-                    description: The CA cert of the server this client cert was generated
-                      from. The CA cert of the server this client cert was generated
-                      from.
-                    type: string
-                  sha1Fingerprint:
-                    description: The SHA1 Fingerprint of the certificate. The SHA1
-                      Fingerprint of the certificate.
+                  state:
+                    description: 'Instance status: CREATING or READY. Instance status:
+                      ''CREATING'' or ''READY''.'
                     type: string
                 type: object
               conditions:

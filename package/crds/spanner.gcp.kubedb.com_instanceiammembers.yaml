@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: networks.compute.gcp.kubeform.com
+  name: instanceiammembers.spanner.gcp.kubedb.com
 spec:
-  group: compute.gcp.kubeform.com
+  group: spanner.gcp.kubedb.com
   names:
     categories:
     - crossplane
     - managed
     - gcp
-    kind: Network
-    listKind: NetworkList
-    plural: networks
-    singular: network
+    kind: InstanceIAMMember
+    listKind: InstanceIAMMemberList
+    plural: instanceiammembers
+    singular: instanceiammember
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Network is the Schema for the Networks API. Manages a VPC network
-          or legacy network resource on GCP.
+        description: InstanceIAMMember is the Schema for the InstanceIAMMembers API.
+          <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkSpec defines the desired state of Network
+            description: InstanceIAMMemberSpec defines the desired state of InstanceIAMMember
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,93 +68,100 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  autoCreateSubnetworks:
-                    description: "When set to true, the network is created in \"auto
-                      subnet mode\" and it will create a subnet for each region automatically
-                      across the 10.128.0.0/9 address range. When set to false, the
-                      network is created in \"custom subnet mode\" so the user can
-                      explicitly connect subnetwork resources. When set to 'true',
-                      the network is created in \"auto subnet mode\" and it will create
-                      a subnet for each region automatically across the '10.128.0.0/9'
-                      address range. \n When set to 'false', the network is created
-                      in \"custom subnet mode\" so the user can explicitly connect
-                      subnetwork resources."
-                    type: boolean
-                  deleteDefaultRoutesOnCreate:
-                    description: If set to true, default routes (0.0.0.0/0) will be
-                      deleted immediately after network creation. Defaults to false.
-                      If set to 'true', default routes ('0.0.0.0/0') will be deleted
-                      immediately after network creation. Defaults to 'false'.
-                    type: boolean
-                  description:
-                    description: An optional description of this resource. The resource
-                      must be recreated to modify this field. An optional description
-                      of this resource. The resource must be recreated to modify this
-                      field.
+                  condition:
+                    items:
+                      properties:
+                        description:
+                          type: string
+                        expression:
+                          type: string
+                        title:
+                          type: string
+                      required:
+                      - expression
+                      - title
+                      type: object
+                    type: array
+                  instance:
                     type: string
-                  enableUlaInternalIpv6:
-                    description: Enable ULA internal ipv6 on this network. Enabling
-                      this feature will assign a /48 from google defined ULA prefix
-                      fd20::/20. Enable ULA internal ipv6 on this network. Enabling
-                      this feature will assign a /48 from google defined ULA prefix
-                      fd20::/20.
-                    type: boolean
-                  internalIpv6Range:
-                    description: When enabling ula internal ipv6, caller optionally
-                      can specify the /48 range they want from the google defined
-                      ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6
-                      address and must be within the fd20::/20. Operation will fail
-                      if the speficied /48 is already in used by another resource.
-                      If the field is not speficied, then a /48 range will be randomly
-                      allocated from fd20::/20 and returned via this field. When enabling
-                      ula internal ipv6, caller optionally can specify the /48 range
-                      they want from the google defined ULA prefix fd20::/20. The
-                      input must be a valid /48 ULA IPv6 address and must be within
-                      the fd20::/20. Operation will fail if the speficied /48 is already
-                      in used by another resource. If the field is not speficied,
-                      then a /48 range will be randomly allocated from fd20::/20 and
-                      returned via this field.
-                    type: string
-                  mtu:
-                    description: Maximum Transmission Unit in bytes. The default value
-                      is 1460 bytes. The minimum value for this field is 1300 and
-                      the maximum value is 8896 bytes (jumbo frames). Note that packets
-                      larger than 1500 bytes (standard Ethernet) can be subject to
-                      TCP-MSS clamping or dropped with an ICMP Fragmentation-Needed
-                      message if the packets are routed to the Internet or other VPCs
-                      with varying MTUs. Maximum Transmission Unit in bytes. The default
-                      value is 1460 bytes. The minimum value for this field is 1300
-                      and the maximum value is 8896 bytes (jumbo frames). Note that
-                      packets larger than 1500 bytes (standard Ethernet) can be subject
-                      to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed'
-                      message if the packets are routed to the Internet or other VPCs
-                      with varying MTUs.
-                    type: number
-                  networkFirewallPolicyEnforcementOrder:
-                    description: 'Set the order that Firewall Rules and Firewall Policies
-                      are evaluated. Default value is AFTER_CLASSIC_FIREWALL. Possible
-                      values are: BEFORE_CLASSIC_FIREWALL, AFTER_CLASSIC_FIREWALL.
-                      Set the order that Firewall Rules and Firewall Policies are
-                      evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
-                      values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"]'
+                  instanceRef:
+                    description: Reference to a Instance to populate instance.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  instanceSelector:
+                    description: Selector for a Instance to populate instance.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  member:
                     type: string
                   project:
-                    description: The ID of the project in which the resource belongs.
-                      If it is not provided, the provider project is used.
                     type: string
-                  routingMode:
-                    description: 'The network-wide routing mode to use. If set to
-                      REGIONAL, this network''s cloud routers will only advertise
-                      routes with subnetworks of this network in the same region as
-                      the router. If set to GLOBAL, this network''s cloud routers
-                      will advertise routes with all subnetworks of this network,
-                      across regions. Possible values are: REGIONAL, GLOBAL. The network-wide
-                      routing mode to use. If set to ''REGIONAL'', this network''s
-                      cloud routers will only advertise routes with subnetworks of
-                      this network in the same region as the router. If set to ''GLOBAL'',
-                      this network''s cloud routers will advertise routes with all
-                      subnetworks of this network, across regions. Possible values:
-                      ["REGIONAL", "GLOBAL"]'
+                  role:
                     type: string
                 type: object
               managementPolicy:
@@ -343,110 +350,38 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: member is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.member)
+            - message: role is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.role)
           status:
-            description: NetworkStatus defines the observed state of Network.
+            description: InstanceIAMMemberStatus defines the observed state of InstanceIAMMember.
             properties:
               atProvider:
                 properties:
-                  autoCreateSubnetworks:
-                    description: "When set to true, the network is created in \"auto
-                      subnet mode\" and it will create a subnet for each region automatically
-                      across the 10.128.0.0/9 address range. When set to false, the
-                      network is created in \"custom subnet mode\" so the user can
-                      explicitly connect subnetwork resources. When set to 'true',
-                      the network is created in \"auto subnet mode\" and it will create
-                      a subnet for each region automatically across the '10.128.0.0/9'
-                      address range. \n When set to 'false', the network is created
-                      in \"custom subnet mode\" so the user can explicitly connect
-                      subnetwork resources."
-                    type: boolean
-                  deleteDefaultRoutesOnCreate:
-                    description: If set to true, default routes (0.0.0.0/0) will be
-                      deleted immediately after network creation. Defaults to false.
-                      If set to 'true', default routes ('0.0.0.0/0') will be deleted
-                      immediately after network creation. Defaults to 'false'.
-                    type: boolean
-                  description:
-                    description: An optional description of this resource. The resource
-                      must be recreated to modify this field. An optional description
-                      of this resource. The resource must be recreated to modify this
-                      field.
-                    type: string
-                  enableUlaInternalIpv6:
-                    description: Enable ULA internal ipv6 on this network. Enabling
-                      this feature will assign a /48 from google defined ULA prefix
-                      fd20::/20. Enable ULA internal ipv6 on this network. Enabling
-                      this feature will assign a /48 from google defined ULA prefix
-                      fd20::/20.
-                    type: boolean
-                  gatewayIpv4:
-                    description: The gateway address for default routing out of the
-                      network. This value is selected by GCP. The gateway address
-                      for default routing out of the network. This value is selected
-                      by GCP.
+                  condition:
+                    items:
+                      properties:
+                        description:
+                          type: string
+                        expression:
+                          type: string
+                        title:
+                          type: string
+                      type: object
+                    type: array
+                  etag:
                     type: string
                   id:
-                    description: an identifier for the resource with format projects/{{project}}/global/networks/{{name}}
                     type: string
-                  internalIpv6Range:
-                    description: When enabling ula internal ipv6, caller optionally
-                      can specify the /48 range they want from the google defined
-                      ULA prefix fd20::/20. The input must be a valid /48 ULA IPv6
-                      address and must be within the fd20::/20. Operation will fail
-                      if the speficied /48 is already in used by another resource.
-                      If the field is not speficied, then a /48 range will be randomly
-                      allocated from fd20::/20 and returned via this field. When enabling
-                      ula internal ipv6, caller optionally can specify the /48 range
-                      they want from the google defined ULA prefix fd20::/20. The
-                      input must be a valid /48 ULA IPv6 address and must be within
-                      the fd20::/20. Operation will fail if the speficied /48 is already
-                      in used by another resource. If the field is not speficied,
-                      then a /48 range will be randomly allocated from fd20::/20 and
-                      returned via this field.
+                  instance:
                     type: string
-                  mtu:
-                    description: Maximum Transmission Unit in bytes. The default value
-                      is 1460 bytes. The minimum value for this field is 1300 and
-                      the maximum value is 8896 bytes (jumbo frames). Note that packets
-                      larger than 1500 bytes (standard Ethernet) can be subject to
-                      TCP-MSS clamping or dropped with an ICMP Fragmentation-Needed
-                      message if the packets are routed to the Internet or other VPCs
-                      with varying MTUs. Maximum Transmission Unit in bytes. The default
-                      value is 1460 bytes. The minimum value for this field is 1300
-                      and the maximum value is 8896 bytes (jumbo frames). Note that
-                      packets larger than 1500 bytes (standard Ethernet) can be subject
-                      to TCP-MSS clamping or dropped with an ICMP 'Fragmentation-Needed'
-                      message if the packets are routed to the Internet or other VPCs
-                      with varying MTUs.
-                    type: number
-                  networkFirewallPolicyEnforcementOrder:
-                    description: 'Set the order that Firewall Rules and Firewall Policies
-                      are evaluated. Default value is AFTER_CLASSIC_FIREWALL. Possible
-                      values are: BEFORE_CLASSIC_FIREWALL, AFTER_CLASSIC_FIREWALL.
-                      Set the order that Firewall Rules and Firewall Policies are
-                      evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible
-                      values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"]'
+                  member:
                     type: string
                   project:
-                    description: The ID of the project in which the resource belongs.
-                      If it is not provided, the provider project is used.
                     type: string
-                  routingMode:
-                    description: 'The network-wide routing mode to use. If set to
-                      REGIONAL, this network''s cloud routers will only advertise
-                      routes with subnetworks of this network in the same region as
-                      the router. If set to GLOBAL, this network''s cloud routers
-                      will advertise routes with all subnetworks of this network,
-                      across regions. Possible values are: REGIONAL, GLOBAL. The network-wide
-                      routing mode to use. If set to ''REGIONAL'', this network''s
-                      cloud routers will only advertise routes with subnetworks of
-                      this network in the same region as the router. If set to ''GLOBAL'',
-                      this network''s cloud routers will advertise routes with all
-                      subnetworks of this network, across regions. Possible values:
-                      ["REGIONAL", "GLOBAL"]'
-                    type: string
-                  selfLink:
-                    description: The URI of the created resource.
+                  role:
                     type: string
                 type: object
               conditions:

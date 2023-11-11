@@ -11,7 +11,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/pipeline"
 
-	"kubeform.dev/provider-gcp/config"
+	"kubedb.dev/provider-gcp/config"
 )
 
 func main() {

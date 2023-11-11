@@ -10,12 +10,12 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "kubeform.dev/provider-gcp/apis/compute/v1alpha1"
-	v1alpha1redis "kubeform.dev/provider-gcp/apis/redis/v1alpha1"
-	v1alpha1spanner "kubeform.dev/provider-gcp/apis/spanner/v1alpha1"
-	v1alpha1sql "kubeform.dev/provider-gcp/apis/sql/v1alpha1"
-	v1alpha1apis "kubeform.dev/provider-gcp/apis/v1alpha1"
-	v1beta1 "kubeform.dev/provider-gcp/apis/v1beta1"
+	v1alpha1 "kubedb.dev/provider-gcp/apis/compute/v1alpha1"
+	v1alpha1redis "kubedb.dev/provider-gcp/apis/redis/v1alpha1"
+	v1alpha1spanner "kubedb.dev/provider-gcp/apis/spanner/v1alpha1"
+	v1alpha1sql "kubedb.dev/provider-gcp/apis/sql/v1alpha1"
+	v1alpha1apis "kubedb.dev/provider-gcp/apis/v1alpha1"
+	v1beta1 "kubedb.dev/provider-gcp/apis/v1beta1"
 )
 
 func init() {

@@ -10,7 +10,7 @@ import (
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 
-	"kubeform.dev/provider-gcp/config/common"
+	"kubedb.dev/provider-gcp/config/common"
 )
 
 // CloudSQL connection detail keys

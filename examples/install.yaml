@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-gcp
 spec:
-  package: kubeform/provider-gcp:v0.1.0
+  package: kubedb/provider-gcp:v0.1.0

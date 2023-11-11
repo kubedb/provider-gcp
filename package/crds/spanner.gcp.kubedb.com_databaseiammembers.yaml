@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: networkpeerings.compute.gcp.kubeform.com
+  name: databaseiammembers.spanner.gcp.kubedb.com
 spec:
-  group: compute.gcp.kubeform.com
+  group: spanner.gcp.kubedb.com
   names:
     categories:
     - crossplane
     - managed
     - gcp
-    kind: NetworkPeering
-    listKind: NetworkPeeringList
-    plural: networkpeerings
-    singular: networkpeering
+    kind: DatabaseIAMMember
+    listKind: DatabaseIAMMemberList
+    plural: databaseiammembers
+    singular: databaseiammember
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NetworkPeering is the Schema for the NetworkPeerings API. Manages
-          a network peering within GCE.
+        description: DatabaseIAMMember is the Schema for the DatabaseIAMMembers API.
+          <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkPeeringSpec defines the desired state of NetworkPeering
+            description: DatabaseIAMMemberSpec defines the desired state of DatabaseIAMMember
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,48 +68,176 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  exportCustomRoutes:
-                    description: Whether to export the custom routes to the peer network.
-                      Defaults to false. Whether to export the custom routes to the
-                      peer network. Defaults to false.
-                    type: boolean
-                  exportSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are exported.
-                      The default value is true, all subnet routes are exported. The
-                      IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always exported to peers and are not controlled by this
-                      field.
-                    type: boolean
-                  importCustomRoutes:
-                    description: Whether to import the custom routes from the peer
-                      network. Defaults to false. Whether to export the custom routes
-                      from the peer network. Defaults to false.
-                    type: boolean
-                  importSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are imported.
-                      The default value is false. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always imported from peers and are not controlled by this
-                      field.
-                    type: boolean
-                  network:
-                    description: The primary network of the peering. The primary network
-                      of the peering.
+                  condition:
+                    items:
+                      properties:
+                        description:
+                          type: string
+                        expression:
+                          type: string
+                        title:
+                          type: string
+                      required:
+                      - expression
+                      - title
+                      type: object
+                    type: array
+                  database:
                     type: string
-                  peerNetwork:
-                    description: The peer network in the peering. The peer network
-                      may belong to a different project. The peer network in the peering.
-                      The peer network may belong to a different project.
+                  databaseRef:
+                    description: Reference to a Database to populate database.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  databaseSelector:
+                    description: Selector for a Database to populate database.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  instance:
                     type: string
-                  stackType:
-                    description: 'Which IP version(s) of traffic and routes are allowed
-                      to be imported or exported between peer networks. The default
-                      value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
-                      Which IP version(s) of traffic and routes are allowed to be
-                      imported or exported between peer networks. The default value
-                      is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]'
+                  instanceRef:
+                    description: Reference to a Instance to populate instance.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  instanceSelector:
+                    description: Selector for a Instance to populate instance.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  member:
                     type: string
-                required:
-                - network
+                  project:
+                    type: string
+                  role:
+                    type: string
                 type: object
               managementPolicy:
                 default: FullControl
@@ -298,66 +426,39 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: peerNetwork is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.peerNetwork)
+            - message: member is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.member)
+            - message: role is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.role)
           status:
-            description: NetworkPeeringStatus defines the observed state of NetworkPeering.
+            description: DatabaseIAMMemberStatus defines the observed state of DatabaseIAMMember.
             properties:
               atProvider:
                 properties:
-                  exportCustomRoutes:
-                    description: Whether to export the custom routes to the peer network.
-                      Defaults to false. Whether to export the custom routes to the
-                      peer network. Defaults to false.
-                    type: boolean
-                  exportSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are exported.
-                      The default value is true, all subnet routes are exported. The
-                      IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always exported to peers and are not controlled by this
-                      field.
-                    type: boolean
+                  condition:
+                    items:
+                      properties:
+                        description:
+                          type: string
+                        expression:
+                          type: string
+                        title:
+                          type: string
+                      type: object
+                    type: array
+                  database:
+                    type: string
+                  etag:
+                    type: string
                   id:
-                    description: an identifier for the resource with format {{network}}/{{name}}
                     type: string
-                  importCustomRoutes:
-                    description: Whether to import the custom routes from the peer
-                      network. Defaults to false. Whether to export the custom routes
-                      from the peer network. Defaults to false.
-                    type: boolean
-                  importSubnetRoutesWithPublicIp:
-                    description: Whether subnet routes with public IP range are imported.
-                      The default value is false. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
-                      are always imported from peers and are not controlled by this
-                      field.
-                    type: boolean
-                  network:
-                    description: The primary network of the peering. The primary network
-                      of the peering.
+                  instance:
                     type: string
-                  peerNetwork:
-                    description: The peer network in the peering. The peer network
-                      may belong to a different project. The peer network in the peering.
-                      The peer network may belong to a different project.
+                  member:
                     type: string
-                  stackType:
-                    description: 'Which IP version(s) of traffic and routes are allowed
-                      to be imported or exported between peer networks. The default
-                      value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
-                      Which IP version(s) of traffic and routes are allowed to be
-                      imported or exported between peer networks. The default value
-                      is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]'
+                  project:
                     type: string
-                  state:
-                    description: State for the peering, either ACTIVE or INACTIVE.
-                      The peering is ACTIVE when there's a matching configuration
-                      in the peer network. State for the peering, either ACTIVE or
-                      INACTIVE. The peering is ACTIVE when there's a matching configuration
-                      in the peer network.
-                    type: string
-                  stateDetails:
-                    description: Details about the current state of the peering. Details
-                      about the current state of the peering.
+                  role:
                     type: string
                 type: object
               conditions:

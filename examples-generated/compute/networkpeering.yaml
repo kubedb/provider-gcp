@@ -1,4 +1,4 @@
-apiVersion: compute.gcp.kubeform.com/v1alpha1
+apiVersion: compute.gcp.kubedb.com/v1alpha1
 kind: NetworkPeering
 metadata:
   annotations:
@@ -13,7 +13,7 @@ spec:
 
 ---
 
-apiVersion: compute.gcp.kubeform.com/v1alpha1
+apiVersion: compute.gcp.kubedb.com/v1alpha1
 kind: Network
 metadata:
   annotations:
@@ -27,7 +27,7 @@ spec:
 
 ---
 
-apiVersion: compute.gcp.kubeform.com/v1alpha1
+apiVersion: compute.gcp.kubedb.com/v1alpha1
 kind: Network
 metadata:
   annotations:

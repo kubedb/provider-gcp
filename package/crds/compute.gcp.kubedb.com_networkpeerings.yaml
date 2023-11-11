@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: databases.spanner.gcp.kubeform.com
+  name: networkpeerings.compute.gcp.kubedb.com
 spec:
-  group: spanner.gcp.kubeform.com
+  group: compute.gcp.kubedb.com
   names:
     categories:
     - crossplane
     - managed
     - gcp
-    kind: Database
-    listKind: DatabaseList
-    plural: databases
-    singular: database
+    kind: NetworkPeering
+    listKind: NetworkPeeringList
+    plural: networkpeerings
+    singular: networkpeering
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Database is the Schema for the Databases API. A Cloud Spanner
-          Database which is hosted on a Spanner instance.
+        description: NetworkPeering is the Schema for the NetworkPeerings API. Manages
+          a network peering within GCE.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: DatabaseSpec defines the desired state of Database
+            description: NetworkPeeringSpec defines the desired state of NetworkPeering
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,68 +68,48 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  databaseDialect:
-                    description: 'The dialect of the Cloud Spanner Database. If it
-                      is not provided, "GOOGLE_STANDARD_SQL" will be used. Possible
-                      values are: GOOGLE_STANDARD_SQL, POSTGRESQL. The dialect of
-                      the Cloud Spanner Database. If it is not provided, "GOOGLE_STANDARD_SQL"
-                      will be used. Possible values: ["GOOGLE_STANDARD_SQL", "POSTGRESQL"]'
-                    type: string
-                  ddl:
-                    description: 'An optional list of DDL statements to run inside
-                      the newly created database. Statements can create tables, indexes,
-                      etc. These statements execute atomically with the creation of
-                      the database: if there is an error in any statement, the database
-                      is not created. An optional list of DDL statements to run inside
-                      the newly created database. Statements can create tables, indexes,
-                      etc. These statements execute atomically with the creation of
-                      the database: if there is an error in any statement, the database
-                      is not created.'
-                    items:
-                      type: string
-                    type: array
-                  deletionProtection:
+                  exportCustomRoutes:
+                    description: Whether to export the custom routes to the peer network.
+                      Defaults to false. Whether to export the custom routes to the
+                      peer network. Defaults to false.
                     type: boolean
-                  encryptionConfig:
-                    description: Encryption configuration for the database Structure
-                      is documented below. Encryption configuration for the database
-                    items:
-                      properties:
-                        kmsKeyName:
-                          description: Fully qualified name of the KMS key to use
-                            to encrypt this database. This key must exist in the same
-                            location as the Spanner Database. Fully qualified name
-                            of the KMS key to use to encrypt this database. This key
-                            must exist in the same location as the Spanner Database.
-                          type: string
-                      required:
-                      - kmsKeyName
-                      type: object
-                    type: array
-                  instance:
-                    description: The instance to create the database on. The instance
-                      to create the database on.
+                  exportSubnetRoutesWithPublicIp:
+                    description: Whether subnet routes with public IP range are exported.
+                      The default value is true, all subnet routes are exported. The
+                      IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
+                      are always exported to peers and are not controlled by this
+                      field.
+                    type: boolean
+                  importCustomRoutes:
+                    description: Whether to import the custom routes from the peer
+                      network. Defaults to false. Whether to export the custom routes
+                      from the peer network. Defaults to false.
+                    type: boolean
+                  importSubnetRoutesWithPublicIp:
+                    description: Whether subnet routes with public IP range are imported.
+                      The default value is false. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
+                      are always imported from peers and are not controlled by this
+                      field.
+                    type: boolean
+                  network:
+                    description: The primary network of the peering. The primary network
+                      of the peering.
                     type: string
-                  project:
-                    description: The ID of the project in which the resource belongs.
-                      If it is not provided, the provider project is used.
+                  peerNetwork:
+                    description: The peer network in the peering. The peer network
+                      may belong to a different project. The peer network in the peering.
+                      The peer network may belong to a different project.
                     type: string
-                  versionRetentionPeriod:
-                    description: The retention period for the database. The retention
-                      period must be between 1 hour and 7 days, and can be specified
-                      in days, hours, minutes, or seconds. For example, the values
-                      1d, 24h, 1440m, and 86400s are equivalent. Default value is
-                      1h. If this property is used, you must avoid adding new DDL
-                      statements to ddl that update the database's version_retention_period.
-                      The retention period for the database. The retention period
-                      must be between 1 hour and 7 days, and can be specified in days,
-                      hours, minutes, or seconds. For example, the values 1d, 24h,
-                      1440m, and 86400s are equivalent. Default value is 1h. If this
-                      property is used, you must avoid adding new DDL statements to
-                      'ddl' that update the database's version_retention_period.
+                  stackType:
+                    description: 'Which IP version(s) of traffic and routes are allowed
+                      to be imported or exported between peer networks. The default
+                      value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
+                      Which IP version(s) of traffic and routes are allowed to be
+                      imported or exported between peer networks. The default value
+                      is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]'
                     type: string
                 required:
-                - instance
+                - network
                 type: object
               managementPolicy:
                 default: FullControl
@@ -317,75 +297,67 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: peerNetwork is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.peerNetwork)
           status:
-            description: DatabaseStatus defines the observed state of Database.
+            description: NetworkPeeringStatus defines the observed state of NetworkPeering.
             properties:
               atProvider:
                 properties:
-                  databaseDialect:
-                    description: 'The dialect of the Cloud Spanner Database. If it
-                      is not provided, "GOOGLE_STANDARD_SQL" will be used. Possible
-                      values are: GOOGLE_STANDARD_SQL, POSTGRESQL. The dialect of
-                      the Cloud Spanner Database. If it is not provided, "GOOGLE_STANDARD_SQL"
-                      will be used. Possible values: ["GOOGLE_STANDARD_SQL", "POSTGRESQL"]'
-                    type: string
-                  ddl:
-                    description: 'An optional list of DDL statements to run inside
-                      the newly created database. Statements can create tables, indexes,
-                      etc. These statements execute atomically with the creation of
-                      the database: if there is an error in any statement, the database
-                      is not created. An optional list of DDL statements to run inside
-                      the newly created database. Statements can create tables, indexes,
-                      etc. These statements execute atomically with the creation of
-                      the database: if there is an error in any statement, the database
-                      is not created.'
-                    items:
-                      type: string
-                    type: array
-                  deletionProtection:
+                  exportCustomRoutes:
+                    description: Whether to export the custom routes to the peer network.
+                      Defaults to false. Whether to export the custom routes to the
+                      peer network. Defaults to false.
                     type: boolean
-                  encryptionConfig:
-                    description: Encryption configuration for the database Structure
-                      is documented below. Encryption configuration for the database
-                    items:
-                      properties:
-                        kmsKeyName:
-                          description: Fully qualified name of the KMS key to use
-                            to encrypt this database. This key must exist in the same
-                            location as the Spanner Database. Fully qualified name
-                            of the KMS key to use to encrypt this database. This key
-                            must exist in the same location as the Spanner Database.
-                          type: string
-                      type: object
-                    type: array
+                  exportSubnetRoutesWithPublicIp:
+                    description: Whether subnet routes with public IP range are exported.
+                      The default value is true, all subnet routes are exported. The
+                      IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
+                      are always exported to peers and are not controlled by this
+                      field.
+                    type: boolean
                   id:
-                    description: an identifier for the resource with format {{instance}}/{{name}}
+                    description: an identifier for the resource with format {{network}}/{{name}}
                     type: string
-                  instance:
-                    description: The instance to create the database on. The instance
-                      to create the database on.
+                  importCustomRoutes:
+                    description: Whether to import the custom routes from the peer
+                      network. Defaults to false. Whether to export the custom routes
+                      from the peer network. Defaults to false.
+                    type: boolean
+                  importSubnetRoutesWithPublicIp:
+                    description: Whether subnet routes with public IP range are imported.
+                      The default value is false. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
+                      are always imported from peers and are not controlled by this
+                      field.
+                    type: boolean
+                  network:
+                    description: The primary network of the peering. The primary network
+                      of the peering.
                     type: string
-                  project:
-                    description: The ID of the project in which the resource belongs.
-                      If it is not provided, the provider project is used.
+                  peerNetwork:
+                    description: The peer network in the peering. The peer network
+                      may belong to a different project. The peer network in the peering.
+                      The peer network may belong to a different project.
+                    type: string
+                  stackType:
+                    description: 'Which IP version(s) of traffic and routes are allowed
+                      to be imported or exported between peer networks. The default
+                      value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
+                      Which IP version(s) of traffic and routes are allowed to be
+                      imported or exported between peer networks. The default value
+                      is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]'
                     type: string
                   state:
-                    description: An explanation of the status of the database. An
-                      explanation of the status of the database.
+                    description: State for the peering, either ACTIVE or INACTIVE.
+                      The peering is ACTIVE when there's a matching configuration
+                      in the peer network. State for the peering, either ACTIVE or
+                      INACTIVE. The peering is ACTIVE when there's a matching configuration
+                      in the peer network.
                     type: string
-                  versionRetentionPeriod:
-                    description: The retention period for the database. The retention
-                      period must be between 1 hour and 7 days, and can be specified
-                      in days, hours, minutes, or seconds. For example, the values
-                      1d, 24h, 1440m, and 86400s are equivalent. Default value is
-                      1h. If this property is used, you must avoid adding new DDL
-                      statements to ddl that update the database's version_retention_period.
-                      The retention period for the database. The retention period
-                      must be between 1 hour and 7 days, and can be specified in days,
-                      hours, minutes, or seconds. For example, the values 1d, 24h,
-                      1440m, and 86400s are equivalent. Default value is 1h. If this
-                      property is used, you must avoid adding new DDL statements to
-                      'ddl' that update the database's version_retention_period.
+                  stateDetails:
+                    description: Details about the current state of the peering. Details
+                      about the current state of the peering.
                     type: string
                 type: object
               conditions:

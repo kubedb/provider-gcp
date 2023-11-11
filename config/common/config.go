@@ -15,7 +15,7 @@ const (
 	// KeyProject is the key for project in Terraform Provider Configuration
 	KeyProject = "project"
 	// SelfPackagePath is the golang path for this package.
-	SelfPackagePath = "kubeform.dev/provider-gcp/config/common"
+	SelfPackagePath = "kubedb.dev/provider-gcp/config/common"
 )
 
 var (
@@ -24,7 +24,7 @@ var (
 	PathSelfLinkExtractor = SelfPackagePath + ".SelfLinkExtractor()"
 
 	// ExtractResourceIDFuncPath holds the GCP resource ID extractor func name
-	ExtractResourceIDFuncPath = "kubeform.dev/provider-gcp/config/common.ExtractResourceID()"
+	ExtractResourceIDFuncPath = "kubedb.dev/provider-gcp/config/common.ExtractResourceID()"
 )
 
 // SelfLinkExtractor extracts URI of the resources from

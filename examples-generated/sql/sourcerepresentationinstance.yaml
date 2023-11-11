@@ -1,4 +1,4 @@
-apiVersion: sql.gcp.kubeform.com/v1alpha1
+apiVersion: sql.gcp.kubedb.com/v1alpha1
 kind: SourceRepresentationInstance
 metadata:
   annotations:

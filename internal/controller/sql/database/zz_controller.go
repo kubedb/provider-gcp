@@ -18,8 +18,8 @@ import (
 	"github.com/upbound/upjet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "kubeform.dev/provider-gcp/apis/sql/v1alpha1"
-	features "kubeform.dev/provider-gcp/internal/features"
+	v1alpha1 "kubedb.dev/provider-gcp/apis/sql/v1alpha1"
+	features "kubedb.dev/provider-gcp/internal/features"
 )
 
 // Setup adds a controller that reconciles Database managed resources.

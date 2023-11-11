@@ -2,7 +2,7 @@
 # Setup Project
 
 PROJECT_NAME ?= provider-gcp
-PROJECT_REPO ?= kubeform.dev/$(PROJECT_NAME)
+PROJECT_REPO ?= kubedb.dev/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.3.3
 
@@ -61,7 +61,7 @@ UPTEST_VERSION = v0.2.1
 
 REGISTRY_ORGS ?= xpkg.upbound.io/upbound
 IMAGES = $(PROJECT_NAME)
-DOCKER_REGISTRY=ghcr.io/kubeform
+DOCKER_REGISTRY=ghcr.io/kubedb
 -include build/makelib/image.mk
 
 # ====================================================================================
