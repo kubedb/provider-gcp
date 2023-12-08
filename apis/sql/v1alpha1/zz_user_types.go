@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -12,6 +16,25 @@ import (
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
+
+type PasswordPolicyInitParameters struct {
+
+	// Number of failed attempts allowed before the user get locked.
+	// Number of failed attempts allowed before the user get locked.
+	AllowedFailedAttempts *float64 `json:"allowedFailedAttempts,omitempty" tf:"allowed_failed_attempts,omitempty"`
+
+	// If true, the check that will lock user after too many failed login attempts will be enabled.
+	// If true, the check that will lock user after too many failed login attempts will be enabled.
+	EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty" tf:"enable_failed_attempts_check,omitempty"`
+
+	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+	EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty" tf:"enable_password_verification,omitempty"`
+
+	// Password expiration duration with one week grace period.
+	// Password expiration duration with one week grace period.
+	PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
+}
 
 type PasswordPolicyObservation struct {
 
@@ -57,6 +80,9 @@ type PasswordPolicyParameters struct {
 	PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
 }
 
+type SQLServerUserDetailsInitParameters struct {
+}
+
 type SQLServerUserDetailsObservation struct {
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
@@ -64,6 +90,9 @@ type SQLServerUserDetailsObservation struct {
 }
 
 type SQLServerUserDetailsParameters struct {
+}
+
+type StatusInitParameters struct {
 }
 
 type StatusObservation struct {
@@ -76,6 +105,37 @@ type StatusObservation struct {
 }
 
 type StatusParameters struct {
+}
+
+type UserInitParameters struct {
+
+	// The deletion policy for the user.
+	// Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful
+	// for Postgres, where users cannot be deleted from the API if they have been granted SQL roles.
+	// The deletion policy for the user. Setting ABANDON allows the resource
+	// to be abandoned rather than deleted. This is useful for Postgres, where users cannot be deleted from the API if they
+	// have been granted SQL roles. Possible values are: "ABANDON".
+	DeletionPolicy *string `json:"deletionPolicy,omitempty" tf:"deletion_policy,omitempty"`
+
+	// The host the user can connect from. This is only supported
+	// for BUILT_IN users in MySQL instances. Don't set this field for PostgreSQL and SQL Server instances.
+	// Can be an IP address. Changing this forces a new resource to be created.
+	// The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	PasswordPolicy []PasswordPolicyInitParameters `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
+	// The ID of the project in which the resource belongs. If it
+	// is not provided, the provider project is used.
+	// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+	// The user type. It determines the method to authenticate the
+	// user during login. The default is the database's built-in user type. Flags
+	// include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+	// The user type. It determines the method to authenticate the user during login.
+	// The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type UserObservation struct {
@@ -182,6 +242,17 @@ type UserParameters struct {
 type UserSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     UserParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider UserInitParameters `json:"initProvider,omitempty"`
 }
 
 // UserStatus defines the observed state of User.

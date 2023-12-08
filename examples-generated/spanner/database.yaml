@@ -30,6 +30,3 @@ spec:
     config: regional-europe-west1
     displayName: main-instance
     numNodes: 1
-
----
-

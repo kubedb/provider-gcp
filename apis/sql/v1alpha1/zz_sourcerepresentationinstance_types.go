@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -12,6 +16,54 @@ import (
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
+
+type SourceRepresentationInstanceInitParameters struct {
+
+	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+	CACertificate *string `json:"caCertificate,omitempty" tf:"ca_certificate,omitempty"`
+
+	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+	ClientCertificate *string `json:"clientCertificate,omitempty" tf:"client_certificate,omitempty"`
+
+	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+	ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
+
+	// The MySQL version running on your source database server.
+	// Possible values are: MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14.
+	// The MySQL version running on your source database server. Possible values: ["MYSQL_5_6", "MYSQL_5_7", "MYSQL_8_0", "POSTGRES_9_6", "POSTGRES_10", "POSTGRES_11", "POSTGRES_12", "POSTGRES_13", "POSTGRES_14"]
+	DatabaseVersion *string `json:"databaseVersion,omitempty" tf:"database_version,omitempty"`
+
+	// A file in the bucket that contains the data from the external server.
+	// A file in the bucket that contains the data from the external server.
+	DumpFilePath *string `json:"dumpFilePath,omitempty" tf:"dump_file_path,omitempty"`
+
+	// The externally accessible IPv4 address for the source database server.
+	// The externally accessible IPv4 address for the source database server.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// The externally accessible port for the source database server.
+	// Defaults to 3306.
+	// The externally accessible port for the source database server.
+	// Defaults to 3306.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// The ID of the project in which the resource belongs.
+	// If it is not provided, the provider project is used.
+	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+	// The Region in which the created instance should reside.
+	// If it is not provided, the provider region is used.
+	// The Region in which the created instance should reside.
+	// If it is not provided, the provider region is used.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// The replication user account on the external server.
+	// The replication user account on the external server.
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+}
 
 type SourceRepresentationInstanceObservation struct {
 
@@ -132,6 +184,17 @@ type SourceRepresentationInstanceParameters struct {
 type SourceRepresentationInstanceSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SourceRepresentationInstanceParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SourceRepresentationInstanceInitParameters `json:"initProvider,omitempty"`
 }
 
 // SourceRepresentationInstanceStatus defines the observed state of SourceRepresentationInstance.
@@ -152,8 +215,8 @@ type SourceRepresentationInstanceStatus struct {
 type SourceRepresentationInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.databaseVersion)",message="databaseVersion is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.host)",message="host is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.databaseVersion) || (has(self.initProvider) && has(self.initProvider.databaseVersion))",message="spec.forProvider.databaseVersion is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.host) || (has(self.initProvider) && has(self.initProvider.host))",message="spec.forProvider.host is a required parameter"
 	Spec   SourceRepresentationInstanceSpec   `json:"spec"`
 	Status SourceRepresentationInstanceStatus `json:"status,omitempty"`
 }

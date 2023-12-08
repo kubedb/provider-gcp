@@ -12,7 +12,7 @@ import (
 	"kubedb.dev/provider-gcp/config/spanner"
 	"kubedb.dev/provider-gcp/config/sql"
 
-	ujconfig "github.com/upbound/upjet/pkg/config"
+	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
 const (
