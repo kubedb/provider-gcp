@@ -1,0 +1,36 @@
+apiVersion: sql.gcp.kubedb.com/v1alpha1
+kind: Database
+metadata:
+  annotations:
+    meta.kubedb.com/example-id: sql/v1alpha1/database
+  labels:
+    testing.kubedb.com/example-name: example_database
+  # ${Rand...} is not valid YAML and is used with automated testing
+  name: example-database
+spec:
+  forProvider:
+    instanceRef:
+      name: example_instance
+---
+
+apiVersion: sql.gcp.kubedb.com/v1alpha1
+kind: DatabaseInstance
+metadata:
+  annotations:
+    meta.kubedb.com/example-id: sql/v1alpha1/databaseinstance
+  labels:
+    testing.kubedb.com/example-name: example_instance
+  # ${Rand...} is not valid YAML and is used with automated testing
+  name: example-instance
+spec:
+  forProvider:
+    region: "us-central1"
+    databaseVersion: "MYSQL_5_7"
+    settings:
+      - tier: "db-f1-micro"
+        diskSize: 20
+    deletionProtection: false # allow crossplane to delete the instance automatically
+  writeConnectionSecretToRef:
+    name: example-sql-db-instance-secret
+    namespace: upbound-system
+---

@@ -1,0 +1,23 @@
+# error :-
+# connect failed: cannot get a terraform workspace for resource: cannot get id: project: no such field
+
+
+apiVersion: sql.gcp.kubedb.com/v1alpha1
+kind: SSLCert
+metadata:
+  annotations:
+    upjet.kubedb.com/manual-intervention: "Depends on SQL instance to be successfully deleted"
+    meta.kubedb.com/example-id: sql/v1alpha1/sslcert
+  labels:
+    testing.kubedb.com/example-name: example_cert
+  name: example-cert
+spec:
+  forProvider:
+    commonName: client-name
+    instanceRef:
+      name: example_instance
+  writeConnectionSecretToRef:
+    name: example-sql-ssl-secret
+    namespace: crossplane-system
+
+---

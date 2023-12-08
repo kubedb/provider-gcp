@@ -1,0 +1,32 @@
+apiVersion: sql.gcp.kubedb.com/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.kubedb.com/example-id: sql/v1alpha1/user
+  labels:
+    testing.kubedb.com/example-name: example_user
+  name: example-user
+spec:
+  forProvider:
+    passwordSecretRef:
+      name: example-sql-user
+      namespace: crossplane-system
+      key: password
+    instanceRef:
+      name: example-instance
+
+---
+
+apiVersion: v1
+data:
+  password: Y2hhbmdlbWU=
+kind: Secret
+metadata:
+  annotations:
+    meta.kubedb.com/example-id: sql/v1alpha1/user
+  labels:
+    testing.kubedb.com/example-name: example_user
+  name: example-sql-user
+  namespace: crossplane-system
+
+---

@@ -1,0 +1,21 @@
+apiVersion: spanner.gcp.kubedb.com/v1alpha1
+kind: InstanceIAMMember
+metadata:
+  labels:
+    testing.kubedb.com/example-name: example-instanceiammember
+  annotations:
+    meta.kubedb.com/example-id: spanner/v1alpha1/instanceiammember
+    upjet.kubedb.com/manual-intervention:
+      "IAM member resource must exist first and be part of the Google workspace
+      address configured for the project"
+  name: example-instanceiammember
+spec:
+  forProvider:
+    member: user:arman@appscode.com
+    # User can also be used
+    # member: user:example.name@example.com
+    role: "roles/editor"
+    instance: example
+    # instanceRef:
+    #   name: example
+---
