@@ -12,7 +12,9 @@ spec:
     - CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)
     - CREATE TABLE t2 (t2 INT64 NOT NULL,) PRIMARY KEY(t2)
     deletionProtection: false
-    instance: ${google_spanner_instance.main.name}
+    instanceSelector:
+      matchLabels:
+        testing.upbound.io/example-name: main
     versionRetentionPeriod: 3d
 
 ---

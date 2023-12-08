@@ -1454,11 +1454,6 @@ func (in *IPConfigurationInitParameters) DeepCopyInto(out *IPConfigurationInitPa
 		*out = new(bool)
 		**out = **in
 	}
-	if in.PrivateNetwork != nil {
-		in, out := &in.PrivateNetwork, &out.PrivateNetwork
-		*out = new(string)
-		**out = **in
-	}
 	if in.RequireSSL != nil {
 		in, out := &in.RequireSSL, &out.RequireSSL
 		*out = new(bool)
@@ -1552,6 +1547,16 @@ func (in *IPConfigurationParameters) DeepCopyInto(out *IPConfigurationParameters
 		in, out := &in.PrivateNetwork, &out.PrivateNetwork
 		*out = new(string)
 		**out = **in
+	}
+	if in.PrivateNetworkRef != nil {
+		in, out := &in.PrivateNetworkRef, &out.PrivateNetworkRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.PrivateNetworkSelector != nil {
+		in, out := &in.PrivateNetworkSelector, &out.PrivateNetworkSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.RequireSSL != nil {
 		in, out := &in.RequireSSL, &out.RequireSSL

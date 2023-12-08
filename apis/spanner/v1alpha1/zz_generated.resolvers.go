@@ -13,6 +13,32 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ResolveReferences of this Database.
+func (mg *Database) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Instance),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.InstanceRef,
+		Selector:     mg.Spec.ForProvider.InstanceSelector,
+		To: reference.To{
+			List:    &InstanceList{},
+			Managed: &Instance{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Instance")
+	}
+	mg.Spec.ForProvider.Instance = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.InstanceRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this DatabaseIAMMember.
 func (mg *DatabaseIAMMember) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)

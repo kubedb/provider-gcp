@@ -146,8 +146,17 @@ type DatabaseParameters struct {
 
 	// The instance to create the database on.
 	// The instance to create the database on.
-	// +kubebuilder:validation:Required
-	Instance *string `json:"instance" tf:"instance,omitempty"`
+	// +crossplane:generate:reference:type=kubedb.dev/provider-gcp/apis/spanner/v1alpha1.Instance
+	// +kubebuilder:validation:Optional
+	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+
+	// Reference to a Instance in spanner to populate instance.
+	// +kubebuilder:validation:Optional
+	InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
+
+	// Selector for a Instance in spanner to populate instance.
+	// +kubebuilder:validation:Optional
+	InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
 
 	// The ID of the project in which the resource belongs.
 	// If it is not provided, the provider project is used.

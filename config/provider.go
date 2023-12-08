@@ -7,6 +7,7 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+	"github.com/crossplane/upjet/pkg/registry/reference"
 	"kubedb.dev/provider-gcp/config/compute"
 	"kubedb.dev/provider-gcp/config/redis"
 	"kubedb.dev/provider-gcp/config/spanner"
@@ -32,6 +33,7 @@ func GetProvider() *ujconfig.Provider {
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithRootGroup("gcp.kubedb.com"),
+		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
 		))
