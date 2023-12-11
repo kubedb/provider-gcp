@@ -16,5 +16,5 @@ spec:
     authEnabled: true
   writeConnectionSecretToRef:
     name: example-redis-instance-secret
-    namespace: upbound-system
+    namespace: crossplane-system
 ---

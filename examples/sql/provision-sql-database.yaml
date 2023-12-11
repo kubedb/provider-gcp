@@ -32,5 +32,5 @@ spec:
     deletionProtection: false # allow crossplane to delete the instance automatically
   writeConnectionSecretToRef:
     name: example-sql-db-instance-secret
-    namespace: upbound-system
+    namespace: crossplane-system
 ---
