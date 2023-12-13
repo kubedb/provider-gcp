@@ -1,7 +1,7 @@
 package common
 
 import (
-	jresource "github.com/upbound/upjet/pkg/resource"
+	jresource "github.com/crossplane/upjet/pkg/resource"
 	"strings"
 
 	"github.com/pkg/errors"

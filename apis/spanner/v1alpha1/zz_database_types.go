@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -12,6 +16,49 @@ import (
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
+
+type DatabaseInitParameters struct {
+
+	// The dialect of the Cloud Spanner Database.
+	// If it is not provided, "GOOGLE_STANDARD_SQL" will be used.
+	// Possible values are: GOOGLE_STANDARD_SQL, POSTGRESQL.
+	// The dialect of the Cloud Spanner Database.
+	// If it is not provided, "GOOGLE_STANDARD_SQL" will be used. Possible values: ["GOOGLE_STANDARD_SQL", "POSTGRESQL"]
+	DatabaseDialect *string `json:"databaseDialect,omitempty" tf:"database_dialect,omitempty"`
+
+	// An optional list of DDL statements to run inside the newly created
+	// database. Statements can create tables, indexes, etc. These statements
+	// execute atomically with the creation of the database: if there is an
+	// error in any statement, the database is not created.
+	// An optional list of DDL statements to run inside the newly created
+	// database. Statements can create tables, indexes, etc. These statements
+	// execute atomically with the creation of the database: if there is an
+	// error in any statement, the database is not created.
+	Ddl []*string `json:"ddl,omitempty" tf:"ddl,omitempty"`
+
+	DeletionProtection *bool `json:"deletionProtection,omitempty" tf:"deletion_protection,omitempty"`
+
+	// Encryption configuration for the database
+	// Structure is documented below.
+	// Encryption configuration for the database
+	EncryptionConfig []EncryptionConfigInitParameters `json:"encryptionConfig,omitempty" tf:"encryption_config,omitempty"`
+
+	// The ID of the project in which the resource belongs.
+	// If it is not provided, the provider project is used.
+	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+	// The retention period for the database. The retention period must be between 1 hour
+	// and 7 days, and can be specified in days, hours, minutes, or seconds. For example,
+	// the values 1d, 24h, 1440m, and 86400s are equivalent. Default value is 1h.
+	// If this property is used, you must avoid adding new DDL statements to ddl that
+	// update the database's version_retention_period.
+	// The retention period for the database. The retention period must be between 1 hour
+	// and 7 days, and can be specified in days, hours, minutes, or seconds. For example,
+	// the values 1d, 24h, 1440m, and 86400s are equivalent. Default value is 1h.
+	// If this property is used, you must avoid adding new DDL statements to 'ddl' that
+	// update the database's version_retention_period.
+	VersionRetentionPeriod *string `json:"versionRetentionPeriod,omitempty" tf:"version_retention_period,omitempty"`
+}
 
 type DatabaseObservation struct {
 
@@ -99,8 +146,17 @@ type DatabaseParameters struct {
 
 	// The instance to create the database on.
 	// The instance to create the database on.
-	// +kubebuilder:validation:Required
-	Instance *string `json:"instance" tf:"instance,omitempty"`
+	// +crossplane:generate:reference:type=kubedb.dev/provider-gcp/apis/spanner/v1alpha1.Instance
+	// +kubebuilder:validation:Optional
+	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+
+	// Reference to a Instance in spanner to populate instance.
+	// +kubebuilder:validation:Optional
+	InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
+
+	// Selector for a Instance in spanner to populate instance.
+	// +kubebuilder:validation:Optional
+	InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
 
 	// The ID of the project in which the resource belongs.
 	// If it is not provided, the provider project is used.
@@ -121,6 +177,15 @@ type DatabaseParameters struct {
 	VersionRetentionPeriod *string `json:"versionRetentionPeriod,omitempty" tf:"version_retention_period,omitempty"`
 }
 
+type EncryptionConfigInitParameters struct {
+
+	// Fully qualified name of the KMS key to use to encrypt this database. This key must exist
+	// in the same location as the Spanner Database.
+	// Fully qualified name of the KMS key to use to encrypt this database. This key must exist
+	// in the same location as the Spanner Database.
+	KMSKeyName *string `json:"kmsKeyName,omitempty" tf:"kms_key_name,omitempty"`
+}
+
 type EncryptionConfigObservation struct {
 
 	// Fully qualified name of the KMS key to use to encrypt this database. This key must exist
@@ -136,7 +201,7 @@ type EncryptionConfigParameters struct {
 	// in the same location as the Spanner Database.
 	// Fully qualified name of the KMS key to use to encrypt this database. This key must exist
 	// in the same location as the Spanner Database.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	KMSKeyName *string `json:"kmsKeyName" tf:"kms_key_name,omitempty"`
 }
 
@@ -144,6 +209,17 @@ type EncryptionConfigParameters struct {
 type DatabaseSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DatabaseParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DatabaseInitParameters `json:"initProvider,omitempty"`
 }
 
 // DatabaseStatus defines the observed state of Database.

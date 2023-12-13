@@ -8,8 +8,12 @@ metadata:
   name: peering1
 spec:
   forProvider:
-    network: ${google_compute_network.default.self_link}
-    peerNetwork: ${google_compute_network.other.self_link}
+    networkSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    peerNetworkSelector:
+      matchLabels:
+        testing.upbound.io/example-name: other
 
 ---
 
@@ -38,6 +42,3 @@ metadata:
 spec:
   forProvider:
     autoCreateSubnetworks: "false"
-
----
-

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -12,6 +16,27 @@ import (
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
+
+type NetworkPeeringInitParameters struct {
+
+	// Whether to export the custom routes to the peer network. Defaults to false.
+	// Whether to export the custom routes to the peer network. Defaults to false.
+	ExportCustomRoutes *bool `json:"exportCustomRoutes,omitempty" tf:"export_custom_routes,omitempty"`
+
+	// Whether subnet routes with public IP range are exported. The default value is true, all subnet routes are exported. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always exported to peers and are not controlled by this field.
+	ExportSubnetRoutesWithPublicIP *bool `json:"exportSubnetRoutesWithPublicIp,omitempty" tf:"export_subnet_routes_with_public_ip,omitempty"`
+
+	// Whether to import the custom routes from the peer network. Defaults to false.
+	// Whether to export the custom routes from the peer network. Defaults to false.
+	ImportCustomRoutes *bool `json:"importCustomRoutes,omitempty" tf:"import_custom_routes,omitempty"`
+
+	// Whether subnet routes with public IP range are imported. The default value is false. The IPv4 special-use ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always imported from peers and are not controlled by this field.
+	ImportSubnetRoutesWithPublicIP *bool `json:"importSubnetRoutesWithPublicIp,omitempty" tf:"import_subnet_routes_with_public_ip,omitempty"`
+
+	// Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
+	// Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]
+	StackType *string `json:"stackType,omitempty" tf:"stack_type,omitempty"`
+}
 
 type NetworkPeeringObservation struct {
 
@@ -77,14 +102,34 @@ type NetworkPeeringParameters struct {
 
 	// The primary network of the peering.
 	// The primary network of the peering.
-	// +kubebuilder:validation:Required
-	Network *string `json:"network" tf:"network,omitempty"`
+	// +crossplane:generate:reference:type=kubedb.dev/provider-gcp/apis/compute/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("self_link",true)
+	// +kubebuilder:validation:Optional
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
+
+	// Reference to a Network in compute to populate network.
+	// +kubebuilder:validation:Optional
+	NetworkRef *v1.Reference `json:"networkRef,omitempty" tf:"-"`
+
+	// Selector for a Network in compute to populate network.
+	// +kubebuilder:validation:Optional
+	NetworkSelector *v1.Selector `json:"networkSelector,omitempty" tf:"-"`
 
 	// The peer network in the peering. The peer network
 	// may belong to a different project.
 	// The peer network in the peering. The peer network may belong to a different project.
+	// +crossplane:generate:reference:type=kubedb.dev/provider-gcp/apis/compute/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("self_link",true)
 	// +kubebuilder:validation:Optional
 	PeerNetwork *string `json:"peerNetwork,omitempty" tf:"peer_network,omitempty"`
+
+	// Reference to a Network in compute to populate peerNetwork.
+	// +kubebuilder:validation:Optional
+	PeerNetworkRef *v1.Reference `json:"peerNetworkRef,omitempty" tf:"-"`
+
+	// Selector for a Network in compute to populate peerNetwork.
+	// +kubebuilder:validation:Optional
+	PeerNetworkSelector *v1.Selector `json:"peerNetworkSelector,omitempty" tf:"-"`
 
 	// Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].
 	// Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]
@@ -96,6 +141,17 @@ type NetworkPeeringParameters struct {
 type NetworkPeeringSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     NetworkPeeringParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider NetworkPeeringInitParameters `json:"initProvider,omitempty"`
 }
 
 // NetworkPeeringStatus defines the observed state of NetworkPeering.
@@ -116,9 +172,8 @@ type NetworkPeeringStatus struct {
 type NetworkPeering struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.peerNetwork)",message="peerNetwork is a required parameter"
-	Spec   NetworkPeeringSpec   `json:"spec"`
-	Status NetworkPeeringStatus `json:"status,omitempty"`
+	Spec              NetworkPeeringSpec   `json:"spec"`
+	Status            NetworkPeeringStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

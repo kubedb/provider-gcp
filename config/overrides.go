@@ -1,6 +1,6 @@
 package config
 
-import ujconfig "github.com/upbound/upjet/pkg/config"
+import ujconfig "github.com/crossplane/upjet/pkg/config"
 
 var (
 	resourceGroup = map[string]string{

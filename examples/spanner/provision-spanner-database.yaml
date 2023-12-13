@@ -1,0 +1,35 @@
+apiVersion: spanner.gcp.kubedb.com/v1alpha1
+kind: Database
+metadata:
+  annotations:
+    meta.kubedb.com/example-id: spanner/v1alpha1/database
+  labels:
+    testing.kubedb.com/example-name: database
+  name: database
+spec:
+  forProvider:
+    ddl:
+    - CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)
+    - CREATE TABLE t2 (t2 INT64 NOT NULL,) PRIMARY KEY(t2)
+    deletionProtection: false
+    instanceRef:
+      name: example
+
+---
+apiVersion: spanner.gcp.kubedb.com/v1alpha1
+kind: Instance
+metadata:
+  annotations:
+    meta.kubedb.com/example-id: spanner/v1alpha1/instance
+  labels:
+    testing.kubedb.com/example-name: example
+  name: example
+spec:
+  forProvider:
+    config: regional-us-central1
+    displayName: Test Spanner Instance
+    labels:
+      foo: bar
+    numNodes: 2
+---
+
