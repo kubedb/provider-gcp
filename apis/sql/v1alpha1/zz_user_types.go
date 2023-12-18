@@ -15,233 +15,261 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+
 )
+
+
+
 
 type PasswordPolicyInitParameters struct {
 
-	// Number of failed attempts allowed before the user get locked.
-	// Number of failed attempts allowed before the user get locked.
-	AllowedFailedAttempts *float64 `json:"allowedFailedAttempts,omitempty" tf:"allowed_failed_attempts,omitempty"`
 
-	// If true, the check that will lock user after too many failed login attempts will be enabled.
-	// If true, the check that will lock user after too many failed login attempts will be enabled.
-	EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty" tf:"enable_failed_attempts_check,omitempty"`
+// Number of failed attempts allowed before the user get locked.
+// Number of failed attempts allowed before the user get locked.
+AllowedFailedAttempts *float64 `json:"allowedFailedAttempts,omitempty" tf:"allowed_failed_attempts,omitempty"`
 
-	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
-	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
-	EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty" tf:"enable_password_verification,omitempty"`
+// If true, the check that will lock user after too many failed login attempts will be enabled.
+// If true, the check that will lock user after too many failed login attempts will be enabled.
+EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty" tf:"enable_failed_attempts_check,omitempty"`
 
-	// Password expiration duration with one week grace period.
-	// Password expiration duration with one week grace period.
-	PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
+// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty" tf:"enable_password_verification,omitempty"`
+
+// Password expiration duration with one week grace period.
+// Password expiration duration with one week grace period.
+PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
 }
+
 
 type PasswordPolicyObservation struct {
 
-	// Number of failed attempts allowed before the user get locked.
-	// Number of failed attempts allowed before the user get locked.
-	AllowedFailedAttempts *float64 `json:"allowedFailedAttempts,omitempty" tf:"allowed_failed_attempts,omitempty"`
 
-	// If true, the check that will lock user after too many failed login attempts will be enabled.
-	// If true, the check that will lock user after too many failed login attempts will be enabled.
-	EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty" tf:"enable_failed_attempts_check,omitempty"`
+// Number of failed attempts allowed before the user get locked.
+// Number of failed attempts allowed before the user get locked.
+AllowedFailedAttempts *float64 `json:"allowedFailedAttempts,omitempty" tf:"allowed_failed_attempts,omitempty"`
 
-	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
-	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
-	EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty" tf:"enable_password_verification,omitempty"`
+// If true, the check that will lock user after too many failed login attempts will be enabled.
+// If true, the check that will lock user after too many failed login attempts will be enabled.
+EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty" tf:"enable_failed_attempts_check,omitempty"`
 
-	// Password expiration duration with one week grace period.
-	// Password expiration duration with one week grace period.
-	PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
+// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty" tf:"enable_password_verification,omitempty"`
 
-	Status []StatusObservation `json:"status,omitempty" tf:"status,omitempty"`
+// Password expiration duration with one week grace period.
+// Password expiration duration with one week grace period.
+PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
+
+Status []StatusObservation `json:"status,omitempty" tf:"status,omitempty"`
 }
+
 
 type PasswordPolicyParameters struct {
 
-	// Number of failed attempts allowed before the user get locked.
-	// Number of failed attempts allowed before the user get locked.
-	// +kubebuilder:validation:Optional
-	AllowedFailedAttempts *float64 `json:"allowedFailedAttempts,omitempty" tf:"allowed_failed_attempts,omitempty"`
 
-	// If true, the check that will lock user after too many failed login attempts will be enabled.
-	// If true, the check that will lock user after too many failed login attempts will be enabled.
-	// +kubebuilder:validation:Optional
-	EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty" tf:"enable_failed_attempts_check,omitempty"`
+// Number of failed attempts allowed before the user get locked.
+// Number of failed attempts allowed before the user get locked.
+// +kubebuilder:validation:Optional
+AllowedFailedAttempts *float64 `json:"allowedFailedAttempts,omitempty" tf:"allowed_failed_attempts,omitempty"`
 
-	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
-	// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
-	// +kubebuilder:validation:Optional
-	EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty" tf:"enable_password_verification,omitempty"`
+// If true, the check that will lock user after too many failed login attempts will be enabled.
+// If true, the check that will lock user after too many failed login attempts will be enabled.
+// +kubebuilder:validation:Optional
+EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty" tf:"enable_failed_attempts_check,omitempty"`
 
-	// Password expiration duration with one week grace period.
-	// Password expiration duration with one week grace period.
-	// +kubebuilder:validation:Optional
-	PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
+// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+// If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.
+// +kubebuilder:validation:Optional
+EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty" tf:"enable_password_verification,omitempty"`
+
+// Password expiration duration with one week grace period.
+// Password expiration duration with one week grace period.
+// +kubebuilder:validation:Optional
+PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty" tf:"password_expiration_duration,omitempty"`
 }
+
 
 type SQLServerUserDetailsInitParameters struct {
+
 }
+
 
 type SQLServerUserDetailsObservation struct {
-	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
-	ServerRoles []*string `json:"serverRoles,omitempty" tf:"server_roles,omitempty"`
+
+Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+ServerRoles []*string `json:"serverRoles,omitempty" tf:"server_roles,omitempty"`
 }
+
 
 type SQLServerUserDetailsParameters struct {
+
 }
 
+
 type StatusInitParameters struct {
+
 }
+
 
 type StatusObservation struct {
 
-	// (read only) If true, user does not have login privileges.
-	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
 
-	// (read only) Password expiration duration with one week grace period.
-	PasswordExpirationTime *string `json:"passwordExpirationTime,omitempty" tf:"password_expiration_time,omitempty"`
+// (read only) If true, user does not have login privileges.
+Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
+
+// (read only) Password expiration duration with one week grace period.
+PasswordExpirationTime *string `json:"passwordExpirationTime,omitempty" tf:"password_expiration_time,omitempty"`
 }
+
 
 type StatusParameters struct {
+
 }
+
 
 type UserInitParameters struct {
 
-	// The deletion policy for the user.
-	// Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful
-	// for Postgres, where users cannot be deleted from the API if they have been granted SQL roles.
-	// The deletion policy for the user. Setting ABANDON allows the resource
-	// to be abandoned rather than deleted. This is useful for Postgres, where users cannot be deleted from the API if they
-	// have been granted SQL roles. Possible values are: "ABANDON".
-	DeletionPolicy *string `json:"deletionPolicy,omitempty" tf:"deletion_policy,omitempty"`
 
-	// The host the user can connect from. This is only supported
-	// for BUILT_IN users in MySQL instances. Don't set this field for PostgreSQL and SQL Server instances.
-	// Can be an IP address. Changing this forces a new resource to be created.
-	// The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+// The deletion policy for the user.
+// Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful
+// for Postgres, where users cannot be deleted from the API if they have been granted SQL roles.
+// The deletion policy for the user. Setting ABANDON allows the resource
+// to be abandoned rather than deleted. This is useful for Postgres, where users cannot be deleted from the API if they
+// have been granted SQL roles. Possible values are: "ABANDON".
+DeletionPolicy *string `json:"deletionPolicy,omitempty" tf:"deletion_policy,omitempty"`
 
-	PasswordPolicy []PasswordPolicyInitParameters `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+// The host the user can connect from. This is only supported
+// for BUILT_IN users in MySQL instances. Don't set this field for PostgreSQL and SQL Server instances.
+// Can be an IP address. Changing this forces a new resource to be created.
+// The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.
+Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
-	// The ID of the project in which the resource belongs. If it
-	// is not provided, the provider project is used.
-	// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+PasswordPolicy []PasswordPolicyInitParameters `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
-	// The user type. It determines the method to authenticate the
-	// user during login. The default is the database's built-in user type. Flags
-	// include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
-	// The user type. It determines the method to authenticate the user during login.
-	// The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+// The ID of the project in which the resource belongs. If it
+// is not provided, the provider project is used.
+// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+// The user type. It determines the method to authenticate the
+// user during login. The default is the database's built-in user type. Flags
+// include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+// The user type. It determines the method to authenticate the user during login.
+// The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
+
 
 type UserObservation struct {
 
-	// The deletion policy for the user.
-	// Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful
-	// for Postgres, where users cannot be deleted from the API if they have been granted SQL roles.
-	// The deletion policy for the user. Setting ABANDON allows the resource
-	// to be abandoned rather than deleted. This is useful for Postgres, where users cannot be deleted from the API if they
-	// have been granted SQL roles. Possible values are: "ABANDON".
-	DeletionPolicy *string `json:"deletionPolicy,omitempty" tf:"deletion_policy,omitempty"`
 
-	// The host the user can connect from. This is only supported
-	// for BUILT_IN users in MySQL instances. Don't set this field for PostgreSQL and SQL Server instances.
-	// Can be an IP address. Changing this forces a new resource to be created.
-	// The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+// The deletion policy for the user.
+// Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful
+// for Postgres, where users cannot be deleted from the API if they have been granted SQL roles.
+// The deletion policy for the user. Setting ABANDON allows the resource
+// to be abandoned rather than deleted. This is useful for Postgres, where users cannot be deleted from the API if they
+// have been granted SQL roles. Possible values are: "ABANDON".
+DeletionPolicy *string `json:"deletionPolicy,omitempty" tf:"deletion_policy,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+// The host the user can connect from. This is only supported
+// for BUILT_IN users in MySQL instances. Don't set this field for PostgreSQL and SQL Server instances.
+// Can be an IP address. Changing this forces a new resource to be created.
+// The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.
+Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
-	// The name of the Cloud SQL instance. Changing this
-	// forces a new resource to be created.
-	// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
-	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	PasswordPolicy []PasswordPolicyObservation `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+// The name of the Cloud SQL instance. Changing this
+// forces a new resource to be created.
+// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
+Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 
-	// The ID of the project in which the resource belongs. If it
-	// is not provided, the provider project is used.
-	// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+PasswordPolicy []PasswordPolicyObservation `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
-	SQLServerUserDetails []SQLServerUserDetailsObservation `json:"sqlServerUserDetails,omitempty" tf:"sql_server_user_details,omitempty"`
+// The ID of the project in which the resource belongs. If it
+// is not provided, the provider project is used.
+// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
 
-	// The user type. It determines the method to authenticate the
-	// user during login. The default is the database's built-in user type. Flags
-	// include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
-	// The user type. It determines the method to authenticate the user during login.
-	// The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+SQLServerUserDetails []SQLServerUserDetailsObservation `json:"sqlServerUserDetails,omitempty" tf:"sql_server_user_details,omitempty"`
+
+// The user type. It determines the method to authenticate the
+// user during login. The default is the database's built-in user type. Flags
+// include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+// The user type. It determines the method to authenticate the user during login.
+// The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
+
 
 type UserParameters struct {
 
-	// The deletion policy for the user.
-	// Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful
-	// for Postgres, where users cannot be deleted from the API if they have been granted SQL roles.
-	// The deletion policy for the user. Setting ABANDON allows the resource
-	// to be abandoned rather than deleted. This is useful for Postgres, where users cannot be deleted from the API if they
-	// have been granted SQL roles. Possible values are: "ABANDON".
-	// +kubebuilder:validation:Optional
-	DeletionPolicy *string `json:"deletionPolicy,omitempty" tf:"deletion_policy,omitempty"`
 
-	// The host the user can connect from. This is only supported
-	// for BUILT_IN users in MySQL instances. Don't set this field for PostgreSQL and SQL Server instances.
-	// Can be an IP address. Changing this forces a new resource to be created.
-	// The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.
-	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+// The deletion policy for the user.
+// Setting ABANDON allows the resource to be abandoned rather than deleted. This is useful
+// for Postgres, where users cannot be deleted from the API if they have been granted SQL roles.
+// The deletion policy for the user. Setting ABANDON allows the resource
+// to be abandoned rather than deleted. This is useful for Postgres, where users cannot be deleted from the API if they
+// have been granted SQL roles. Possible values are: "ABANDON".
+// +kubebuilder:validation:Optional
+DeletionPolicy *string `json:"deletionPolicy,omitempty" tf:"deletion_policy,omitempty"`
 
-	// The name of the Cloud SQL instance. Changing this
-	// forces a new resource to be created.
-	// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
-	// +crossplane:generate:reference:type=DatabaseInstance
-	// +kubebuilder:validation:Optional
-	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+// The host the user can connect from. This is only supported
+// for BUILT_IN users in MySQL instances. Don't set this field for PostgreSQL and SQL Server instances.
+// Can be an IP address. Changing this forces a new resource to be created.
+// The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.
+// +kubebuilder:validation:Optional
+Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
-	// Reference to a DatabaseInstance to populate instance.
-	// +kubebuilder:validation:Optional
-	InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
+// The name of the Cloud SQL instance. Changing this
+// forces a new resource to be created.
+// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
+// +crossplane:generate:reference:type=DatabaseInstance
+// +kubebuilder:validation:Optional
+Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 
-	// Selector for a DatabaseInstance to populate instance.
-	// +kubebuilder:validation:Optional
-	InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
+// Reference to a DatabaseInstance to populate instance.
+// +kubebuilder:validation:Optional
+InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Optional
-	PasswordPolicy []PasswordPolicyParameters `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+// Selector for a DatabaseInstance to populate instance.
+// +kubebuilder:validation:Optional
+InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
 
-	// The password for the user. Can be updated. For Postgres
-	// instances this is a Required field, unless type is set to either CLOUD_IAM_USER
-	// or CLOUD_IAM_SERVICE_ACCOUNT. Don't set this field for CLOUD_IAM_USER
-	// and CLOUD_IAM_SERVICE_ACCOUNT user types for any Cloud SQL instance.
-	// The password for the user. Can be updated. For Postgres instances this is a Required field, unless type is set to
-	// either CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT.
-	// +kubebuilder:validation:Optional
-	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+// +kubebuilder:validation:Optional
+PasswordPolicy []PasswordPolicyParameters `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
-	// The ID of the project in which the resource belongs. If it
-	// is not provided, the provider project is used.
-	// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
-	// +kubebuilder:validation:Optional
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// The password for the user. Can be updated. For Postgres
+// instances this is a Required field, unless type is set to either CLOUD_IAM_USER
+// or CLOUD_IAM_SERVICE_ACCOUNT. Don't set this field for CLOUD_IAM_USER
+// and CLOUD_IAM_SERVICE_ACCOUNT user types for any Cloud SQL instance.
+// The password for the user. Can be updated. For Postgres instances this is a Required field, unless type is set to
+// either CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT.
+// +kubebuilder:validation:Optional
+PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
-	// The user type. It determines the method to authenticate the
-	// user during login. The default is the database's built-in user type. Flags
-	// include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
-	// The user type. It determines the method to authenticate the user during login.
-	// The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
-	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+// The ID of the project in which the resource belongs. If it
+// is not provided, the provider project is used.
+// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+// +kubebuilder:validation:Optional
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+// The user type. It determines the method to authenticate the
+// user during login. The default is the database's built-in user type. Flags
+// include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+// The user type. It determines the method to authenticate the user during login.
+// The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".
+// +kubebuilder:validation:Optional
+Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // UserSpec defines the desired state of User
 type UserSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     UserParameters `json:"forProvider"`
+	ForProvider       UserParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -252,13 +280,13 @@ type UserSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider UserInitParameters `json:"initProvider,omitempty"`
+	InitProvider       UserInitParameters `json:"initProvider,omitempty"`
 }
 
 // UserStatus defines the observed state of User.
 type UserStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        UserObservation `json:"atProvider,omitempty"`
+	AtProvider          UserObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
