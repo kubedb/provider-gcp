@@ -15,175 +15,184 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+
 )
+
+
+
 
 type SourceRepresentationInstanceInitParameters struct {
 
-	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
-	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
-	CACertificate *string `json:"caCertificate,omitempty" tf:"ca_certificate,omitempty"`
 
-	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	ClientCertificate *string `json:"clientCertificate,omitempty" tf:"client_certificate,omitempty"`
+// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+CACertificate *string `json:"caCertificate,omitempty" tf:"ca_certificate,omitempty"`
 
-	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
+// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+ClientCertificate *string `json:"clientCertificate,omitempty" tf:"client_certificate,omitempty"`
 
-	// The MySQL version running on your source database server.
-	// Possible values are: MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14.
-	// The MySQL version running on your source database server. Possible values: ["MYSQL_5_6", "MYSQL_5_7", "MYSQL_8_0", "POSTGRES_9_6", "POSTGRES_10", "POSTGRES_11", "POSTGRES_12", "POSTGRES_13", "POSTGRES_14"]
-	DatabaseVersion *string `json:"databaseVersion,omitempty" tf:"database_version,omitempty"`
+// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
 
-	// A file in the bucket that contains the data from the external server.
-	// A file in the bucket that contains the data from the external server.
-	DumpFilePath *string `json:"dumpFilePath,omitempty" tf:"dump_file_path,omitempty"`
+// The MySQL version running on your source database server.
+// Possible values are: MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14.
+// The MySQL version running on your source database server. Possible values: ["MYSQL_5_6", "MYSQL_5_7", "MYSQL_8_0", "POSTGRES_9_6", "POSTGRES_10", "POSTGRES_11", "POSTGRES_12", "POSTGRES_13", "POSTGRES_14"]
+DatabaseVersion *string `json:"databaseVersion,omitempty" tf:"database_version,omitempty"`
 
-	// The externally accessible IPv4 address for the source database server.
-	// The externally accessible IPv4 address for the source database server.
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+// A file in the bucket that contains the data from the external server.
+// A file in the bucket that contains the data from the external server.
+DumpFilePath *string `json:"dumpFilePath,omitempty" tf:"dump_file_path,omitempty"`
 
-	// The externally accessible port for the source database server.
-	// Defaults to 3306.
-	// The externally accessible port for the source database server.
-	// Defaults to 3306.
-	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+// The externally accessible IPv4 address for the source database server.
+// The externally accessible IPv4 address for the source database server.
+Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
-	// The ID of the project in which the resource belongs.
-	// If it is not provided, the provider project is used.
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// The externally accessible port for the source database server.
+// Defaults to 3306.
+// The externally accessible port for the source database server.
+// Defaults to 3306.
+Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
-	// The Region in which the created instance should reside.
-	// If it is not provided, the provider region is used.
-	// The Region in which the created instance should reside.
-	// If it is not provided, the provider region is used.
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+// The ID of the project in which the resource belongs.
+// If it is not provided, the provider project is used.
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
 
-	// The replication user account on the external server.
-	// The replication user account on the external server.
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+// The Region in which the created instance should reside.
+// If it is not provided, the provider region is used.
+// The Region in which the created instance should reside.
+// If it is not provided, the provider region is used.
+Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+// The replication user account on the external server.
+// The replication user account on the external server.
+Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
+
 
 type SourceRepresentationInstanceObservation struct {
 
-	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
-	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
-	CACertificate *string `json:"caCertificate,omitempty" tf:"ca_certificate,omitempty"`
 
-	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	ClientCertificate *string `json:"clientCertificate,omitempty" tf:"client_certificate,omitempty"`
+// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+CACertificate *string `json:"caCertificate,omitempty" tf:"ca_certificate,omitempty"`
 
-	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
+// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+ClientCertificate *string `json:"clientCertificate,omitempty" tf:"client_certificate,omitempty"`
 
-	// The MySQL version running on your source database server.
-	// Possible values are: MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14.
-	// The MySQL version running on your source database server. Possible values: ["MYSQL_5_6", "MYSQL_5_7", "MYSQL_8_0", "POSTGRES_9_6", "POSTGRES_10", "POSTGRES_11", "POSTGRES_12", "POSTGRES_13", "POSTGRES_14"]
-	DatabaseVersion *string `json:"databaseVersion,omitempty" tf:"database_version,omitempty"`
+// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
 
-	// A file in the bucket that contains the data from the external server.
-	// A file in the bucket that contains the data from the external server.
-	DumpFilePath *string `json:"dumpFilePath,omitempty" tf:"dump_file_path,omitempty"`
+// The MySQL version running on your source database server.
+// Possible values are: MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14.
+// The MySQL version running on your source database server. Possible values: ["MYSQL_5_6", "MYSQL_5_7", "MYSQL_8_0", "POSTGRES_9_6", "POSTGRES_10", "POSTGRES_11", "POSTGRES_12", "POSTGRES_13", "POSTGRES_14"]
+DatabaseVersion *string `json:"databaseVersion,omitempty" tf:"database_version,omitempty"`
 
-	// The externally accessible IPv4 address for the source database server.
-	// The externally accessible IPv4 address for the source database server.
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+// A file in the bucket that contains the data from the external server.
+// A file in the bucket that contains the data from the external server.
+DumpFilePath *string `json:"dumpFilePath,omitempty" tf:"dump_file_path,omitempty"`
 
-	// an identifier for the resource with format projects/{{project}}/instances/{{name}}
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+// The externally accessible IPv4 address for the source database server.
+// The externally accessible IPv4 address for the source database server.
+Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
-	// The externally accessible port for the source database server.
-	// Defaults to 3306.
-	// The externally accessible port for the source database server.
-	// Defaults to 3306.
-	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+// an identifier for the resource with format projects/{{project}}/instances/{{name}}
+ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The ID of the project in which the resource belongs.
-	// If it is not provided, the provider project is used.
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// The externally accessible port for the source database server.
+// Defaults to 3306.
+// The externally accessible port for the source database server.
+// Defaults to 3306.
+Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
-	// The Region in which the created instance should reside.
-	// If it is not provided, the provider region is used.
-	// The Region in which the created instance should reside.
-	// If it is not provided, the provider region is used.
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+// The ID of the project in which the resource belongs.
+// If it is not provided, the provider project is used.
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
 
-	// The replication user account on the external server.
-	// The replication user account on the external server.
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+// The Region in which the created instance should reside.
+// If it is not provided, the provider region is used.
+// The Region in which the created instance should reside.
+// If it is not provided, the provider region is used.
+Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+// The replication user account on the external server.
+// The replication user account on the external server.
+Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
+
 
 type SourceRepresentationInstanceParameters struct {
 
-	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
-	// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
-	// +kubebuilder:validation:Optional
-	CACertificate *string `json:"caCertificate,omitempty" tf:"ca_certificate,omitempty"`
 
-	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// +kubebuilder:validation:Optional
-	ClientCertificate *string `json:"clientCertificate,omitempty" tf:"client_certificate,omitempty"`
+// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+// The CA certificate on the external server. Include only if SSL/TLS is used on the external server.
+// +kubebuilder:validation:Optional
+CACertificate *string `json:"caCertificate,omitempty" tf:"ca_certificate,omitempty"`
 
-	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
-	// +kubebuilder:validation:Optional
-	ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
+// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// The client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// +kubebuilder:validation:Optional
+ClientCertificate *string `json:"clientCertificate,omitempty" tf:"client_certificate,omitempty"`
 
-	// The MySQL version running on your source database server.
-	// Possible values are: MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14.
-	// The MySQL version running on your source database server. Possible values: ["MYSQL_5_6", "MYSQL_5_7", "MYSQL_8_0", "POSTGRES_9_6", "POSTGRES_10", "POSTGRES_11", "POSTGRES_12", "POSTGRES_13", "POSTGRES_14"]
-	// +kubebuilder:validation:Optional
-	DatabaseVersion *string `json:"databaseVersion,omitempty" tf:"database_version,omitempty"`
+// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// The private key file for the client certificate on the external server. Required only for server-client authentication. Include only if SSL/TLS is used on the external server.
+// +kubebuilder:validation:Optional
+ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
 
-	// A file in the bucket that contains the data from the external server.
-	// A file in the bucket that contains the data from the external server.
-	// +kubebuilder:validation:Optional
-	DumpFilePath *string `json:"dumpFilePath,omitempty" tf:"dump_file_path,omitempty"`
+// The MySQL version running on your source database server.
+// Possible values are: MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14.
+// The MySQL version running on your source database server. Possible values: ["MYSQL_5_6", "MYSQL_5_7", "MYSQL_8_0", "POSTGRES_9_6", "POSTGRES_10", "POSTGRES_11", "POSTGRES_12", "POSTGRES_13", "POSTGRES_14"]
+// +kubebuilder:validation:Optional
+DatabaseVersion *string `json:"databaseVersion,omitempty" tf:"database_version,omitempty"`
 
-	// The externally accessible IPv4 address for the source database server.
-	// The externally accessible IPv4 address for the source database server.
-	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+// A file in the bucket that contains the data from the external server.
+// A file in the bucket that contains the data from the external server.
+// +kubebuilder:validation:Optional
+DumpFilePath *string `json:"dumpFilePath,omitempty" tf:"dump_file_path,omitempty"`
 
-	// The password for the replication user account.
-	// Note: This property is sensitive and will not be displayed in the plan.
-	// The password for the replication user account.
-	// +kubebuilder:validation:Optional
-	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+// The externally accessible IPv4 address for the source database server.
+// The externally accessible IPv4 address for the source database server.
+// +kubebuilder:validation:Optional
+Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
-	// The externally accessible port for the source database server.
-	// Defaults to 3306.
-	// The externally accessible port for the source database server.
-	// Defaults to 3306.
-	// +kubebuilder:validation:Optional
-	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+// The password for the replication user account.
+// Note: This property is sensitive and will not be displayed in the plan.
+// The password for the replication user account.
+// +kubebuilder:validation:Optional
+PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
-	// The ID of the project in which the resource belongs.
-	// If it is not provided, the provider project is used.
-	// +kubebuilder:validation:Optional
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// The externally accessible port for the source database server.
+// Defaults to 3306.
+// The externally accessible port for the source database server.
+// Defaults to 3306.
+// +kubebuilder:validation:Optional
+Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
-	// The Region in which the created instance should reside.
-	// If it is not provided, the provider region is used.
-	// The Region in which the created instance should reside.
-	// If it is not provided, the provider region is used.
-	// +kubebuilder:validation:Optional
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+// The ID of the project in which the resource belongs.
+// If it is not provided, the provider project is used.
+// +kubebuilder:validation:Optional
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
 
-	// The replication user account on the external server.
-	// The replication user account on the external server.
-	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+// The Region in which the created instance should reside.
+// If it is not provided, the provider region is used.
+// The Region in which the created instance should reside.
+// If it is not provided, the provider region is used.
+// +kubebuilder:validation:Optional
+Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+// The replication user account on the external server.
+// The replication user account on the external server.
+// +kubebuilder:validation:Optional
+Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 // SourceRepresentationInstanceSpec defines the desired state of SourceRepresentationInstance
 type SourceRepresentationInstanceSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     SourceRepresentationInstanceParameters `json:"forProvider"`
+	ForProvider       SourceRepresentationInstanceParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -194,13 +203,13 @@ type SourceRepresentationInstanceSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider SourceRepresentationInstanceInitParameters `json:"initProvider,omitempty"`
+	InitProvider       SourceRepresentationInstanceInitParameters `json:"initProvider,omitempty"`
 }
 
 // SourceRepresentationInstanceStatus defines the observed state of SourceRepresentationInstance.
 type SourceRepresentationInstanceStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        SourceRepresentationInstanceObservation `json:"atProvider,omitempty"`
+	AtProvider          SourceRepresentationInstanceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -215,10 +224,10 @@ type SourceRepresentationInstanceStatus struct {
 type SourceRepresentationInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.databaseVersion) || (has(self.initProvider) && has(self.initProvider.databaseVersion))",message="spec.forProvider.databaseVersion is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.host) || (has(self.initProvider) && has(self.initProvider.host))",message="spec.forProvider.host is a required parameter"
-	Spec   SourceRepresentationInstanceSpec   `json:"spec"`
-	Status SourceRepresentationInstanceStatus `json:"status,omitempty"`
+// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.databaseVersion) || (has(self.initProvider) && has(self.initProvider.databaseVersion))",message="spec.forProvider.databaseVersion is a required parameter"
+// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.host) || (has(self.initProvider) && has(self.initProvider.host))",message="spec.forProvider.host is a required parameter"
+	Spec              SourceRepresentationInstanceSpec   `json:"spec"`
+	Status            SourceRepresentationInstanceStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

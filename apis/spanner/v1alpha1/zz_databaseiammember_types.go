@@ -15,109 +15,128 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+
 )
 
+
+
+
 type ConditionInitParameters struct {
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
-	Title *string `json:"title,omitempty" tf:"title,omitempty"`
+Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
+
 
 type ConditionObservation struct {
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
-	Title *string `json:"title,omitempty" tf:"title,omitempty"`
+Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
+
 
 type ConditionParameters struct {
 
-	// +kubebuilder:validation:Optional
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// +kubebuilder:validation:Optional
-	Expression *string `json:"expression" tf:"expression,omitempty"`
+// +kubebuilder:validation:Optional
+Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// +kubebuilder:validation:Optional
-	Title *string `json:"title" tf:"title,omitempty"`
+// +kubebuilder:validation:Optional
+Expression *string `json:"expression" tf:"expression,omitempty"`
+
+// +kubebuilder:validation:Optional
+Title *string `json:"title" tf:"title,omitempty"`
 }
+
 
 type DatabaseIAMMemberInitParameters struct {
-	Condition []ConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
-	Member *string `json:"member,omitempty" tf:"member,omitempty"`
 
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+Condition []ConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+Member *string `json:"member,omitempty" tf:"member,omitempty"`
+
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
+
 
 type DatabaseIAMMemberObservation struct {
-	Condition []ConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
 
-	Database *string `json:"database,omitempty" tf:"database,omitempty"`
 
-	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+Condition []ConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+Database *string `json:"database,omitempty" tf:"database,omitempty"`
 
-	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
-	Member *string `json:"member,omitempty" tf:"member,omitempty"`
+ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+Member *string `json:"member,omitempty" tf:"member,omitempty"`
+
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
+
 
 type DatabaseIAMMemberParameters struct {
 
-	// +kubebuilder:validation:Optional
-	Condition []ConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
-	// +crossplane:generate:reference:type=Database
-	// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.ExtractResourceID()
-	// +kubebuilder:validation:Optional
-	Database *string `json:"database,omitempty" tf:"database,omitempty"`
+// +kubebuilder:validation:Optional
+Condition []ConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
-	// Reference to a Database to populate database.
-	// +kubebuilder:validation:Optional
-	DatabaseRef *v1.Reference `json:"databaseRef,omitempty" tf:"-"`
+// +crossplane:generate:reference:type=Database
+// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.ExtractResourceID()
+// +kubebuilder:validation:Optional
+Database *string `json:"database,omitempty" tf:"database,omitempty"`
 
-	// Selector for a Database to populate database.
-	// +kubebuilder:validation:Optional
-	DatabaseSelector *v1.Selector `json:"databaseSelector,omitempty" tf:"-"`
+// Reference to a Database to populate database.
+// +kubebuilder:validation:Optional
+DatabaseRef *v1.Reference `json:"databaseRef,omitempty" tf:"-"`
 
-	// +crossplane:generate:reference:type=Instance
-	// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.ExtractResourceID()
-	// +kubebuilder:validation:Optional
-	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+// Selector for a Database to populate database.
+// +kubebuilder:validation:Optional
+DatabaseSelector *v1.Selector `json:"databaseSelector,omitempty" tf:"-"`
 
-	// Reference to a Instance to populate instance.
-	// +kubebuilder:validation:Optional
-	InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
+// +crossplane:generate:reference:type=Instance
+// +crossplane:generate:reference:extractor=kubedb.dev/provider-gcp/config/common.ExtractResourceID()
+// +kubebuilder:validation:Optional
+Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 
-	// Selector for a Instance to populate instance.
-	// +kubebuilder:validation:Optional
-	InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
+// Reference to a Instance to populate instance.
+// +kubebuilder:validation:Optional
+InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Optional
-	Member *string `json:"member,omitempty" tf:"member,omitempty"`
+// Selector for a Instance to populate instance.
+// +kubebuilder:validation:Optional
+InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Optional
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// +kubebuilder:validation:Optional
+Member *string `json:"member,omitempty" tf:"member,omitempty"`
 
-	// +kubebuilder:validation:Optional
-	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+// +kubebuilder:validation:Optional
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+// +kubebuilder:validation:Optional
+Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 // DatabaseIAMMemberSpec defines the desired state of DatabaseIAMMember
 type DatabaseIAMMemberSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     DatabaseIAMMemberParameters `json:"forProvider"`
+	ForProvider       DatabaseIAMMemberParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -128,13 +147,13 @@ type DatabaseIAMMemberSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider DatabaseIAMMemberInitParameters `json:"initProvider,omitempty"`
+	InitProvider       DatabaseIAMMemberInitParameters `json:"initProvider,omitempty"`
 }
 
 // DatabaseIAMMemberStatus defines the observed state of DatabaseIAMMember.
 type DatabaseIAMMemberStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        DatabaseIAMMemberObservation `json:"atProvider,omitempty"`
+	AtProvider          DatabaseIAMMemberObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -149,10 +168,10 @@ type DatabaseIAMMemberStatus struct {
 type DatabaseIAMMember struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.member) || (has(self.initProvider) && has(self.initProvider.member))",message="spec.forProvider.member is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || (has(self.initProvider) && has(self.initProvider.role))",message="spec.forProvider.role is a required parameter"
-	Spec   DatabaseIAMMemberSpec   `json:"spec"`
-	Status DatabaseIAMMemberStatus `json:"status,omitempty"`
+// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.member) || (has(self.initProvider) && has(self.initProvider.member))",message="spec.forProvider.member is a required parameter"
+// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || (has(self.initProvider) && has(self.initProvider.role))",message="spec.forProvider.role is a required parameter"
+	Spec              DatabaseIAMMemberSpec   `json:"spec"`
+	Status            DatabaseIAMMemberStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

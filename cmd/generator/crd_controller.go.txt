@@ -1,0 +1,48 @@
+//package controller
+
+var (
+
+	setupDone = map[schema.GroupKind]bool{}
+	mu        sync.RWMutex
+)
+
+type CustomResourceReconciler struct {
+	mgr ctrl.Manager
+	o   controller.Options
+}
+
+func NewCustomResourceReconciler(mgr ctrl.Manager, o controller.Options) *CustomResourceReconciler {
+	return &CustomResourceReconciler{mgr: mgr, o: o}
+}
+
+func (r *CustomResourceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	log := log.FromContext(ctx)
+	var crd apiextensions.CustomResourceDefinition
+	if err := r.mgr.GetClient().Get(ctx, req.NamespacedName, &crd); err != nil {
+		log.Error(err, "unable to fetch CustomResourceDefinition")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+	gk := schema.GroupKind{
+		Group: crd.Spec.Group,
+		Kind:  crd.Spec.Names.Kind,
+	}
+	mu.Lock()
+	defer mu.Unlock()
+	_, found := setupDone[gk]
+	if found {
+		return ctrl.Result{}, nil
+	}
+	setup, found := setupFns[gk]
+	if found {
+		setup(r.mgr, r.o)
+		setupDone[gk] = true
+	}
+
+	return ctrl.Result{}, nil
+}
+
+func (r *CustomResourceReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	return ctrl.NewControllerManagedBy(mgr).
+		For(&apiextensions.CustomResourceDefinition{}).
+		Complete(r)
+}

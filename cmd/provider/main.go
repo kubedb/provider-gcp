@@ -6,6 +6,7 @@ package main
 
 import (
 	"context"
+	"k8s.io/klog/v2"
 	"os"
 	"path/filepath"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
@@ -77,6 +78,7 @@ func main() {
 	})
 	kingpin.FatalIfError(err, "Cannot create controller manager")
 	kingpin.FatalIfError(apis.AddToScheme(mgr.GetScheme()), "Cannot add GCP APIs to scheme")
+	kingpin.FatalIfError(apis.AddToSchemeCrd(mgr.GetScheme()), "Cannot add Azure APIs to scheme")
 	o := tjcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
@@ -114,7 +116,10 @@ func main() {
 		o.Features.Enable(features.EnableBetaManagementPolicies)
 		log.Info("Alpha feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
-
-	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup GCP controllers")
+	if err := controller.NewCustomResourceReconciler(mgr, o).SetupWithManager(mgr); err != nil {
+		klog.Error(err, "unable to create controller", "controller", "CustomResourceReconciler")
+		os.Exit(1)
+	}
+	//kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup GCP controllers")
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
 }

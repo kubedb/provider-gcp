@@ -15,101 +15,110 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+
 )
+
+
+
 
 type SSLCertInitParameters struct {
 
-	// The common name to be used in the certificate to identify the
-	// client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
-	// The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
-	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
 
-	// The ID of the project in which the resource belongs. If it
-	// is not provided, the provider project is used.
-	// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// The common name to be used in the certificate to identify the
+// client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
+// The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
+CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+// The ID of the project in which the resource belongs. If it
+// is not provided, the provider project is used.
+// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
 }
+
 
 type SSLCertObservation struct {
 
-	// The actual certificate data for this client certificate.
-	// The actual certificate data for this client certificate.
-	Cert *string `json:"cert,omitempty" tf:"cert,omitempty"`
 
-	// The serial number extracted from the certificate data.
-	// The serial number extracted from the certificate data.
-	CertSerialNumber *string `json:"certSerialNumber,omitempty" tf:"cert_serial_number,omitempty"`
+// The actual certificate data for this client certificate.
+// The actual certificate data for this client certificate.
+Cert *string `json:"cert,omitempty" tf:"cert,omitempty"`
 
-	// The common name to be used in the certificate to identify the
-	// client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
-	// The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
-	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+// The serial number extracted from the certificate data.
+// The serial number extracted from the certificate data.
+CertSerialNumber *string `json:"certSerialNumber,omitempty" tf:"cert_serial_number,omitempty"`
 
-	// The time when the certificate was created in RFC 3339 format,
-	// for example 2012-11-15T16:19:00.094Z.
-	// The time when the certificate was created in RFC 3339 format, for example 2012-11-15T16:19:00.094Z.
-	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
+// The common name to be used in the certificate to identify the
+// client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
+// The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
+CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
 
-	// The time when the certificate expires in RFC 3339 format,
-	// for example 2012-11-15T16:19:00.094Z.
-	// The time when the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z.
-	ExpirationTime *string `json:"expirationTime,omitempty" tf:"expiration_time,omitempty"`
+// The time when the certificate was created in RFC 3339 format,
+// for example 2012-11-15T16:19:00.094Z.
+// The time when the certificate was created in RFC 3339 format, for example 2012-11-15T16:19:00.094Z.
+CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+// The time when the certificate expires in RFC 3339 format,
+// for example 2012-11-15T16:19:00.094Z.
+// The time when the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z.
+ExpirationTime *string `json:"expirationTime,omitempty" tf:"expiration_time,omitempty"`
 
-	// The name of the Cloud SQL instance. Changing this
-	// forces a new resource to be created.
-	// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
-	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The ID of the project in which the resource belongs. If it
-	// is not provided, the provider project is used.
-	// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// The name of the Cloud SQL instance. Changing this
+// forces a new resource to be created.
+// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
+Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 
-	// The CA cert of the server this client cert was generated from.
-	// The CA cert of the server this client cert was generated from.
-	ServerCACert *string `json:"serverCaCert,omitempty" tf:"server_ca_cert,omitempty"`
+// The ID of the project in which the resource belongs. If it
+// is not provided, the provider project is used.
+// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
 
-	// The SHA1 Fingerprint of the certificate.
-	// The SHA1 Fingerprint of the certificate.
-	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty" tf:"sha1_fingerprint,omitempty"`
+// The CA cert of the server this client cert was generated from.
+// The CA cert of the server this client cert was generated from.
+ServerCACert *string `json:"serverCaCert,omitempty" tf:"server_ca_cert,omitempty"`
+
+// The SHA1 Fingerprint of the certificate.
+// The SHA1 Fingerprint of the certificate.
+Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty" tf:"sha1_fingerprint,omitempty"`
 }
+
 
 type SSLCertParameters struct {
 
-	// The common name to be used in the certificate to identify the
-	// client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
-	// The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
-	// +kubebuilder:validation:Optional
-	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
 
-	// The name of the Cloud SQL instance. Changing this
-	// forces a new resource to be created.
-	// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
-	// +crossplane:generate:reference:type=DatabaseInstance
-	// +kubebuilder:validation:Optional
-	Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
+// The common name to be used in the certificate to identify the
+// client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
+// The common name to be used in the certificate to identify the client. Constrained to [a-zA-Z.-_ ]+. Changing this forces a new resource to be created.
+// +kubebuilder:validation:Optional
+CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
 
-	// Reference to a DatabaseInstance to populate instance.
-	// +kubebuilder:validation:Optional
-	InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
+// The name of the Cloud SQL instance. Changing this
+// forces a new resource to be created.
+// The name of the Cloud SQL instance. Changing this forces a new resource to be created.
+// +crossplane:generate:reference:type=DatabaseInstance
+// +kubebuilder:validation:Optional
+Instance *string `json:"instance,omitempty" tf:"instance,omitempty"`
 
-	// Selector for a DatabaseInstance to populate instance.
-	// +kubebuilder:validation:Optional
-	InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
+// Reference to a DatabaseInstance to populate instance.
+// +kubebuilder:validation:Optional
+InstanceRef *v1.Reference `json:"instanceRef,omitempty" tf:"-"`
 
-	// The ID of the project in which the resource belongs. If it
-	// is not provided, the provider project is used.
-	// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
-	// +kubebuilder:validation:Optional
-	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+// Selector for a DatabaseInstance to populate instance.
+// +kubebuilder:validation:Optional
+InstanceSelector *v1.Selector `json:"instanceSelector,omitempty" tf:"-"`
+
+// The ID of the project in which the resource belongs. If it
+// is not provided, the provider project is used.
+// The ID of the project in which the resource belongs. If it is not provided, the provider project is used.
+// +kubebuilder:validation:Optional
+Project *string `json:"project,omitempty" tf:"project,omitempty"`
 }
 
 // SSLCertSpec defines the desired state of SSLCert
 type SSLCertSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     SSLCertParameters `json:"forProvider"`
+	ForProvider       SSLCertParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -120,13 +129,13 @@ type SSLCertSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider SSLCertInitParameters `json:"initProvider,omitempty"`
+	InitProvider       SSLCertInitParameters `json:"initProvider,omitempty"`
 }
 
 // SSLCertStatus defines the observed state of SSLCert.
 type SSLCertStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        SSLCertObservation `json:"atProvider,omitempty"`
+	AtProvider          SSLCertObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -141,9 +150,9 @@ type SSLCertStatus struct {
 type SSLCert struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.commonName) || (has(self.initProvider) && has(self.initProvider.commonName))",message="spec.forProvider.commonName is a required parameter"
-	Spec   SSLCertSpec   `json:"spec"`
-	Status SSLCertStatus `json:"status,omitempty"`
+// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.commonName) || (has(self.initProvider) && has(self.initProvider.commonName))",message="spec.forProvider.commonName is a required parameter"
+	Spec              SSLCertSpec   `json:"spec"`
+	Status            SSLCertStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -3,11 +3,11 @@ kind: ProviderConfig
 metadata:
   name: default
 spec:
-  projectID: appscode-testing
+  projectID: <PROJECT_ID>
   credentials:
     source: Secret
     secretRef:
       namespace: crossplane-system
       name: gcp-secret
       key: creds
----
+#  kubectl create secret generic gcp-secret -n crossplane-system --from-file=creds=./appscode-testing.json

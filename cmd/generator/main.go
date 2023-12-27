@@ -6,12 +6,13 @@ package main
 
 import (
 	"fmt"
+	dynamic_controller "kubedb.dev/provider-gcp/cmd/dynamic-controller"
 	"os"
 	"path/filepath"
 
 	"github.com/crossplane/upjet/pkg/pipeline"
 
-	"kubedb.dev/provider-gcp/config"
+	pconfig "kubedb.dev/provider-gcp/config"
 )
 
 func main() {
@@ -23,5 +24,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", rootDir))
 	}
-	pipeline.Run(config.GetProvider(), absRootDir)
+	pc := pconfig.GetProvider()
+	pipeline.Run(pc, absRootDir)
+	dynamic_controller.GenerateController(pc, absRootDir)
 }
