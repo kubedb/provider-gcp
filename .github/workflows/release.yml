@@ -28,8 +28,8 @@ jobs:
     needs: label-detector
     runs-on: "${{ needs.label-detector.outputs.runs-on }}"
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
+      - uses: actions/checkout@v1
+      - run: git checkout -b release-${GITHUB_REF_NAME}
 
       - name: Set up Go 1.21
         uses: actions/setup-go@v1
