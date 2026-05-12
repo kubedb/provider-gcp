@@ -5,7 +5,10 @@ on: issue_comment
 jobs:
   backport:
     runs-on: ubuntu-22.04
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/backport')
+    if: |
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/backport') &&
+      (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER')
     steps:
     - name: Extract Command
       id: command
