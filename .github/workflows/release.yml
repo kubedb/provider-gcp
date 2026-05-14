@@ -56,14 +56,18 @@ jobs:
           sudo apt-get install -y unzip
           GOBIN=/usr/local/bin go install golang.org/x/tools/cmd/goimports@latest
 
+      - name: Log in to the GitHub Container registry
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: 1gtm
+          password: ${{ secrets.LGTM_GITHUB_TOKEN }}
+
       - name: Publish to GitHub Container Registry
         env:
           REGISTRY: ghcr.io/kubedb
-          DOCKER_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
-          USERNAME: 1gtm
           APPSCODE_ENV: prod
         run: |
-          docker login ghcr.io --username ${USERNAME} --password ${DOCKER_TOKEN}
           make submodules
           make generate
           make build.all
