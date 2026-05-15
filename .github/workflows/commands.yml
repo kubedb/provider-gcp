@@ -5,11 +5,14 @@ on: issue_comment
 jobs:
   backport:
     runs-on: ubuntu-22.04
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/backport')
+    if: |
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/backport') &&
+      (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER')
     steps:
     - name: Extract Command
       id: command
-      uses: xt0rted/slash-command-action@v1
+      uses: xt0rted/slash-command-action@e02bfcd136eeba51130fe06c7a31a1ef9085cf62 # v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         command: backport
@@ -19,12 +22,12 @@ jobs:
         permission-level: write
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       with:
         fetch-depth: 0
 
     - name: Open Backport PR
-      uses: zeebe-io/backport-action@v0.0.4
+      uses: zeebe-io/backport-action@6d30c3afa2146e1370dfaae83e99cdd1ee3bcba4 # v0.0.4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         github_workspace: ${{ github.workspace }}
