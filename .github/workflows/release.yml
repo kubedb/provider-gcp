@@ -14,8 +14,6 @@ jobs:
   label-detector:
     name: Runner Label
     runs-on: label-detector
-    permissions:
-      contents: write
     outputs:
       runs-on: ${{ steps.detector.outputs.label }}
     steps:
@@ -63,8 +61,8 @@ jobs:
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ghcr.io
-          username: 1gtm
-          password: ${{ secrets.LGTM_GITHUB_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Container Registry
         env:
@@ -81,3 +79,5 @@ jobs:
         if: startsWith(github.event.ref, 'refs/tags/') && (contains(github.ref, '-alpha.') || contains(github.ref, '-beta.')) == false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          generate_release_notes: true
